@@ -1,0 +1,25 @@
+........................
+.S                     .
+.             XXXXXX   .
+.     XXXX             .
+.                      .
+.   X     XXXXX        .
+.                      .
+.   XXXXXXXXX          .
+.                      .
+.        XXXXXXXXXXX   .
+.                      .
+.   XXXXXXXXX          .
+.                      .
+.                      .
+.                      .
+.   XXXXXXXXX          .
+.   X                  .
+.   X                  .
+.XXXX   X              .
+.       X  XXXXXXXXX   .
+.       X      X       .
+.XXXXXXXX      X  X    .
+.          G   XXXX    .
+.   XXXXXXXXX     X    .
+........................
