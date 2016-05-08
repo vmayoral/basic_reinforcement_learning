@@ -118,7 +118,7 @@ hitWallReward = -5
 normalReward = -1
 
 directions = 4
-world = cellular.World(Cell, directions=directions, filename='cliffs.txt')
+world = cellular.World(Cell, directions=directions, filename='../../worlds/cliffs.txt')
 
 if startCell is None:
     print "You must indicate where the agent starts by putting a 'S' in the map file"
@@ -126,7 +126,7 @@ if startCell is None:
 agent = Agent()
 world.addAgent(agent, cell=startCell)
 
-pretraining = 0
+pretraining = 10000
 for i in range(pretraining):
     if i % 1000 == 0:
         print i, agent.score

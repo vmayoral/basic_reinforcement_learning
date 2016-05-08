@@ -10,8 +10,7 @@ This repository aims to provide an introduction series to reinforcement learning
 ### Tutorials:
 - Tutorial 1: [Q-learning](tutorial1/README.md)
 - Tutorial 2: [SARSA](tutorial2/README.md)
-- Tutorial 3: Egocentric learning (WIP)
-- Tutorial 4: Egocentric + allocentric learning (WIP)
+- Tutorial 3: (WIP)
 
 This work has been inspired by Terry Stewart’s work and the complementary sessions of Travis DeWolf described at https://github.com/studywolf/blog/tree/master/RL.
 
