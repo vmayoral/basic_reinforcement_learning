@@ -16,8 +16,11 @@ class QLearn:
 
     def learnQ(self, state, action, reward, value):
         '''
-        Q-learning:        
+        Q-learning:
             Q(s, a) += alpha * (reward(s,a) + max(Q(s') - Q(s,a))
+
+                (note that no future action is taken in consideration)
+            
         '''        
         oldv = self.q.get((state, action), None)
         if oldv is None:

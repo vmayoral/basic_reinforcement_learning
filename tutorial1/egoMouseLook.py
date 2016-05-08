@@ -77,9 +77,12 @@ class Mouse(cellular.Agent):
         self.lastAction = None
 
     def update(self):
+        # calculate the state of the surrounding cells
         state = self.calcState()
+        # asign a reward of -1 by default
         reward = -1
 
+        # observe the reward and update the Q-value
         if self.cell == cat.cell:
             self.eaten += 1
             reward = -100
@@ -98,6 +101,7 @@ class Mouse(cellular.Agent):
         if self.lastState is not None:
             self.ai.learn(self.lastState, self.lastAction, reward, state)
 
+        # Choose a new action and execute it
         state = self.calcState()
         action = self.ai.chooseAction(state)
         self.lastState = state
@@ -134,7 +138,7 @@ epsilonx = (0,100000)
 epsilony = (0.1,0)
 epsilonm = (epsilony[1] - epsilony[0]) / (epsilonx[1] - epsilonx[0])
 
-endAge = world.age + 10000
+endAge = world.age + 600000
 
 while world.age < endAge:
     world.update()
@@ -154,3 +158,8 @@ world.display.activate(size=30)
 world.display.delay = 1
 while 1:
     world.update(mouse.fed, mouse.eaten)
+    print len(mouse.ai.q) # print the amount of state/action, reward 
+                          # elements stored
+    import sys
+    bytes = sys.getsizeof(mouse.ai.q)
+    print "Bytes: {:d} ({:d} KB)".format(bytes, bytes/1024)

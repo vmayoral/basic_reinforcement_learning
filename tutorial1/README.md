@@ -157,9 +157,97 @@ In general, this implementaiton will be used in **8 directions**, thererby `(0, 
 - **gamma**: the q-learning discount factor, set to `0.9`.
 - **epsilon**: an exploration constant to randomize decisions, set to `0.1`.
 
+The *Mouse* player calculates the next state using the `calcState()` method implemented as follows:
+```python
+
+    def calcState(self):
+        def cellvalue(cell):
+            if cat.cell is not None and (cell.x == cat.cell.x and
+                                         cell.y == cat.cell.y):
+                return 3
+            elif cheese.cell is not None and (cell.x == cheese.cell.x and
+                                              cell.y == cheese.cell.y):
+                return 2
+            else:
+                return 1 if cell.wall else 0
+
+        return tuple([cellvalue(self.world.getWrappedCell(self.cell.x + j, self.cell.y + i))
+                      for i,j in lookcells])
+
+```
+This, in a nutshell, returns a tupple of the values of the cells surrounding the current *Mouse* as follows:
+- `3`: if the *Cat* is in that cell
+- `2`: if the *Cheese* is in that cell
+- `1`: if the that cell is a wall
+- `0`: otherwise
+
+The lookup is performed according to the `lookdist` variable that in this implementation uses a value of `2` (in other words, the mouse can "see" up to two cells ahead in every direction).
+
+To finish up reviewing the *Mouse* implementation, let's look at how the Q-learning is implemented:
 
 <div id='q-learning'/>
 #### Q-learning implementation
+Let's look at the `update` method of the *Mouse* player:
+
+```python
+    def update(self):
+        # calculate the state of the surrounding cells
+        state = self.calcState()
+        # asign a reward of -1 by default
+        reward = -1
+
+        # Update the Q-value
+        if self.cell == cat.cell:
+            self.eaten += 1
+            reward = -100
+            if self.lastState is not None:
+                self.ai.learn(self.lastState, self.lastAction, reward, state)
+            self.lastState = None
+
+            self.cell = pickRandomLocation()
+            return
+
+        if self.cell == cheese.cell:
+            self.fed += 1
+            reward = 50
+            cheese.cell = pickRandomLocation()
+
+        if self.lastState is not None:
+            self.ai.learn(self.lastState, self.lastAction, reward, state)
+
+        # Choose a new action and execute it
+        state = self.calcState()
+        action = self.ai.chooseAction(state)
+        self.lastState = state
+        self.lastAction = action
+
+        self.goInDirection(action)
+```
+
+Code has been commented so that its understanding is simplified. The implementation matches the pseudo-code presented in the [Background](#background) section above (note that for the sake of the implementation, the actions in the `Python` implementation have been reordered). 
+
+Rewards are given with these terms:
+- `-100`: if the *Cat* player eats the *Mouse*
+- `50`: if the *Mouse* player eats the cheese
+- `-1`: otherwise
+
+The learning algorithm records every state/action/reward combination in a dictionary containing a (state, action) tuple in the key and the reward as the value of each member.
+
+Note that the amount of elements saved in the dictionary for this simplified 2D environment is considerable after a few generations. To get some insight about this fact, consider the following numbers:
+- After **10 000** generations:
+  	- 2430 elements (state/action/reward combinations) learned
+  	- Bytes: 196888 (192 KB)
+- After **100 000** generations:
+	- 5631 elements (state/action/reward combinations) learned
+	- Bytes: 786712 (768 KB)
+- After **600 000** generations:
+	- 9514 elements (state/action/reward combinations) learned
+	- Bytes: 786712 (768 KB)
+- After **1 000 000** generations:
+	- 10440 elements (state/action/reward combinations) learned
+	- Bytes: 786712 (768 KB)
+
+Given the results showed above, one can observe that for some reason, Python `sys.getsizeof` function seems to be upper bounded by 786712 (768 KB). We can't provide accurate data but given the results showed, one can conclude that the elements generated after **1 million generations should require something close to 10 MB in memory** for this 2D simplified world.
 
 <div id='results'/>
 ### Results

@@ -13,7 +13,7 @@ This repository aims to provide an introduction series to reinforcement learning
 - Tutorial 3: WIP
 - Tutorial 4: WIP
 
-This work is inspired by https://github.com/studywolf/blog/tree/master/RL.
+This work has been inspired by Terry Stewart’s work and the complementary sessions of Travis DeWolf described at https://github.com/studywolf/blog/tree/master/RL.
 
 ### References:
 - Chris Watkins, Learning from Delayed Rewards, Cambridge, 1989 ([thesis](http://www.cs.rhul.ac.uk/home/chrisw/new_thesis.pdf))
