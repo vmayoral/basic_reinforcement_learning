@@ -9,7 +9,7 @@ This repository aims to provide an introduction series to reinforcement learning
 
 ### Tutorials:
 - Tutorial 1: [Q-learning](tutorial1/README.md)
-- Tutorial 2: WIP
+- Tutorial 2: [SARSA](tutorial2/README.md)
 - Tutorial 3: WIP
 - Tutorial 4: WIP
 
