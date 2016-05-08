@@ -25,7 +25,7 @@ Repeat (for each generation):
 	While (s is not a terminal state):		
 		Choose a from s using policy derived from Q
 		Take action a, observe r, s'
-		Q(s,a) += alpha * (r + gamma * max,Q(s', a') - Q(s,a))
+		Q(s,a) += alpha * (r + gamma * max,Q(s') - Q(s,a))
 		s = s'
 ```
 
@@ -34,7 +34,6 @@ where:
 - **a**: is the previous action
 - **Q()**: is the Q-learning algorithm
 - **s'**: is the current state
-- **a'**: is the current action
 - **alpha**: is the the learning rate, set generally between 0 and 1. Setting it to 0 means that the Q-values are never updated, thereby nothing is learned. Setting  alpha to a high value such as 0.9 means that learning can occur quickly.
 - **gamma**: is the discount factor, also set between 0 and 1. This models the fact that future rewards are worth less than immediate rewards.
 - **max,**: is the the maximum reward that is attainable in the state following the current one (the reward for taking the optimal action thereafter).

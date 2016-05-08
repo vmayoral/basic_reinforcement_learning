@@ -79,7 +79,7 @@ cliffReward = -100
 goalReward = 0
 
 directions = 4
-world = cellular.World(Cell, directions=directions, filename='cliff.txt')
+world = cellular.World(Cell, directions=directions, filename='../worlds/cliff.txt')
 
 if startCell is None:
     print "You must indicate where the agent starts by putting a 'S' in the map file"
