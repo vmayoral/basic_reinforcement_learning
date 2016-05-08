@@ -1,7 +1,7 @@
 Basic Reinforcement Learning Tutorial 2: SARSA
 ===================================================
 
-This tutorial builds upon the [Tutorial 1](../tutorial1/README.md) and covers the basics of SARSA using the cliff example.
+This tutorial builds upon the [Tutorial 1](../tutorial1/README.md) and covers the basics of SARSA using the cliff example. The cliff is a 2D world where a player (blue) has to reach the goal (green) by walking through the world while avoid to fall into the cliff (red).
 
 ## Table of Contents
 - [Background](#background)
