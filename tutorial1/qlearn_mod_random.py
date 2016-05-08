@@ -7,7 +7,7 @@ class QLearn:
 
         self.epsilon = epsilon  # exploration constant
         self.alpha = alpha      # discount constant
-        self.gamma = gamma
+        self.gamma = gamma      # discount factor
         self.actions = actions
 
     def getQ(self, state, action):
