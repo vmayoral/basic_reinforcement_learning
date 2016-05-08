@@ -7,6 +7,12 @@ This repository aims to provide an introduction series to reinforcement learning
 
 *The cat is represented in orange, the mouse in grey and the cheese in yellow.*
 
+### Tutorials:
+- Tutorial 1: [Q-learning](tutorial1/README.md)
+- Tutorial 2: WIP
+- Tutorial 3: WIP
+- Tutorial 4: WIP
+
 This work is inspired by https://github.com/studywolf/blog/tree/master/RL.
 
 ### References:
