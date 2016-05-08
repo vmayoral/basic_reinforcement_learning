@@ -111,6 +111,8 @@ class World:
         self.width = width
         self.height = height
         self.image = None
+        self.eaten = None
+        self.fed = None
         self.reset()
         if filename is not None:
             self.load(filename)
@@ -615,8 +617,10 @@ class PygameDisplay:
 def makeTitle(world):
     text = 'age: %d' % world.age
     extra = []
-    extra.append('fed=%d' % world.fed)
-    extra.append('eaten=%d' % world.eaten)
+    if world.fed:
+        extra.append('fed=%d' % world.fed)
+    if world.eaten:
+        extra.append('eaten=%d' % world.eaten)
     if world.display.paused:
         extra.append('paused')
     if world.display.updateEvery != 1:

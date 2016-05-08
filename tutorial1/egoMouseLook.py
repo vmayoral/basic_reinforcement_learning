@@ -123,7 +123,7 @@ mouse = Mouse()
 cat = Cat()
 cheese = Cheese()
 
-world = cellular.World(Cell, directions=directions, filename='waco.txt')
+world = cellular.World(Cell, directions=directions, filename='../worlds/waco.txt')
 world.age = 0
 
 world.addAgent(cheese, cell=pickRandomLocation())
@@ -134,7 +134,7 @@ epsilonx = (0,100000)
 epsilony = (0.1,0)
 epsilonm = (epsilony[1] - epsilony[0]) / (epsilonx[1] - epsilonx[0])
 
-endAge = world.age + 15000
+endAge = world.age + 150000
 
 while world.age < endAge:
     world.update()
