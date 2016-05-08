@@ -10,5 +10,6 @@ This repository aims to provide an introduction series to reinforcement learning
 This work is inspired by https://github.com/studywolf/blog/tree/master/RL.
 
 ### References:
-- https://github.com/aikorea/awesome-rl
-- https://studywolf.wordpress.com/2012/11/25/reinforcement-learning-q-learning-and-exploration/
+- Chris Watkins, Learning from Delayed Rewards, Cambridge, 1989 ([thesis](http://www.cs.rhul.ac.uk/home/chrisw/new_thesis.pdf))
+- Awesome Reinforcement Learning repository, https://github.com/aikorea/awesome-rl
+- Reinforcement learning blog posts, https://studywolf.wordpress.com/2012/11/25/reinforcement-learning-q-learning-and-exploration/
