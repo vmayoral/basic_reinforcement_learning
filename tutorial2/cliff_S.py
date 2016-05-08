@@ -40,6 +40,7 @@ class Agent(cellular.Agent):
             actions=range(directions), epsilon=0.1, alpha=0.1, gamma=0.9)
         self.lastAction = None
         self.score = 0
+        self.deads = 0
 
     def colour(self):
         return 'blue'
@@ -67,6 +68,7 @@ class Agent(cellular.Agent):
     def calcReward(self):
         here = self.cell
         if here.cliff:
+            self.deads += 1
             return cliffReward
         elif here.goal:
             self.score += 1
@@ -77,7 +79,7 @@ class Agent(cellular.Agent):
 
 normalReward = -1
 cliffReward = -100
-goalReward = 0
+goalReward = 50
 
 directions = 4
 world = cellular.World(Cell, directions=directions, filename='../worlds/cliff.txt')
@@ -88,11 +90,12 @@ if startCell is None:
 agent = Agent()
 world.addAgent(agent, cell=startCell)
 
-pretraining = 0
+pretraining = 100000
 for i in range(pretraining):
     if i % 1000 == 0:
-        print i, agent.score
+        print i, agent.score, agent.deads
         agent.score = 0
+        agent.deads = 0
     world.update()
 
 world.display.activate(size=30)
