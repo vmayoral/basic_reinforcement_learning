@@ -11,7 +11,7 @@ This repository aims to provide an introduction series to reinforcement learning
 - Tutorial 1: [Q-learning](tutorial1/README.md)
 - Tutorial 2: [SARSA](tutorial2/README.md)
 - Tutorial 3: [Exploring OpenAI gym](tutorial3/README.md)
-- Tutorial 4: Q-learning in OpenAI gym (WIP)
+- Tutorial 4: [Q-learning in OpenAI gym](tutorial3/README.md)
 - Tutorial 5: Deep Q-learning in OpenAI gym (WIP)
 
 
