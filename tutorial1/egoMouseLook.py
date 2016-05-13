@@ -103,6 +103,7 @@ class Mouse(cellular.Agent):
 
         # Choose a new action and execute it
         state = self.calcState()
+        print(state)
         action = self.ai.chooseAction(state)
         self.lastState = state
         self.lastAction = action
