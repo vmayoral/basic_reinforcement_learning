@@ -241,7 +241,7 @@ for i in range(epochs):
         #Observe reward
         reward = getReward(new_state)
 
-        #Experience replay storage
+        # Experience replay storage
         if (len(replay) < buffer): #if buffer not filled, add to it
             replay.append((state, action, reward, new_state))
         else: #if buffer full, overwrite old values

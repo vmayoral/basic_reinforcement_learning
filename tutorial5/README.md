@@ -5,25 +5,38 @@ Up until this tutorial Q-learning algorithm has been storing state-action pairs 
 
 That's where neural networks come in. Or any other type of function approximator, even a simple linear model. We can use a neural network, instead of a lookup table, as our  Q(s,a)Q(s,a)  function. Just like before, it will accept a state and an action and spit out the value of that state-action.
 
+### A bit of theoretical background
+Discuss Deepmind's papers and original DQN algorithm.
+
+(from second paper)
+>Reinforcement learning is known to be unstable or even to diverge when a nonlinear function approximator such as a neural network is used to represent the action-value (also known as Q) function20.
+
 ### Comparing different techniques in `CartPole`
 
 
 | Algorithm | `epochs:` 100 | `epochs:` 500  | `epochs:` 1000  |
 |-----------|----------------|----------------|-----------------|
 | Q-learning| 104.87 (86.37) | 181.22 (145.78) | 191.35 (141.31) |
-| DQN	| | |
+| DQN (default params)	| 24 (17) | 200 (199) | |
 
 *Each cell represents the best 100 scores for the number of epochs and in parenthesis the average score over all the epochs*
 
 
-- Intro to Theano
-- Intro MNIST in Theano
-- Intro to MNIST in Keras
-- TODO: DQN with Keras in OpenAI gym
+- [x] Intro to Theano
+- [x] Intro MNIST in Theano
+- [x] Intro to MNIST in Keras
+- [x] DQN with Keras in OpenAI gym
+- [x] deer implementation for CartPole (theano and keras)
+
+
+- [ ] review q-learning4k
+- [ ] catch example https://edersantana.github.io/articles/keras_rl/
 
 ### References:
 - http://deeplearning.net/tutorial/mlp.html#mlp
 - http://outlace.com/Reinforcement-Learning-Part-3/
 - http://keras.io/
+- http://ufldl.stanford.edu/tutorial/supervised/MultiLayerNeuralNetworks/
 - https://github.com/sherjilozair/dqn
+- https://github.com/VinF/deer
 

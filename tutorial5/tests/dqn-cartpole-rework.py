@@ -1,17 +1,14 @@
 '''
-DQN approach with experience replay for different RL problems
-as part of the basic series on reinforcement learning @
+Deep Q-learning approach to the cartpole problem
+using OpenAI's gym environment.
+
+As part of the basic series on reinforcement learning @
 https://github.com/vmayoral/basic_reinforcement_learning
 
-TODO:
-    - learning is just not fine
-    - review bins, and activation functions
-
-Inspired by 
-        - https://gym.openai.com/evaluations/eval_kWknKOkPQ7izrixdhriurA
-        - http://outlace.com/Reinforcement-Learning-Part-3/
+Inspired by https://github.com/VinF/deer
 
         @author: Victor Mayoral Vilches <victor@erlerobotics.com>
+
 '''
 import gym
 import numpy
@@ -19,7 +16,7 @@ import random
 import pandas
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
-from keras.optimizers import RMSprop
+from keras.optimizers import RMSprop, SGD, Adagrad, Adam
 
 class QLearn:
     def __init__(self, actions, epsilon, alpha, gamma):
@@ -34,16 +31,21 @@ class QLearn:
         
         # Build the neural network
         self.network = Sequential()
-        self.network.add(Dense(200, init='lecun_uniform', input_shape=(4,)))
-        self.network.add(Activation('relu'))
+        self.network.add(Dense(50, init='lecun_uniform', input_shape=(4,)))
+        # self.network.add(Activation('sigmoid'))
         #self.network.add(Dropout(0.2))
-        self.network.add(Dense(150, init='lecun_uniform'))
-        self.network.add(Activation('relu'))
-        #self.network.add(Dropout(0.2))
-        self.network.add(Dense(2, init='lecun_uniform'))
-        self.network.add(Activation('linear')) #linear output so we can have range of real-valued outputs
 
+        self.network.add(Dense(20, init='lecun_uniform'))
+        # self.network.add(Activation('sigmoid'))
+        # #self.network.add(Dropout(0.2))
+
+        self.network.add(Dense(2, init='lecun_uniform'))
+        # self.network.add(Activation('linear')) #linear output so we can have range of real-valued outputs
+
+        # rms = SGD(lr=0.0001, decay=1e-6, momentum=0.5) # explodes to non
         rms = RMSprop()
+        # rms = Adagrad()
+        # rms = Adam()
         self.network.compile(loss='mse', optimizer=rms)
         # Get a summary of the network
         self.network.summary()
@@ -98,14 +100,13 @@ def to_bin(value, bins):
 
 if __name__ == '__main__':
     env = gym.make('CartPole-v0')
-    env.monitor.start('/tmp/cartpole-experiment-1', force=True)
+    # env.monitor.start('/tmp/cartpole-experiment-1', force=True)
         # video_callable=lambda count: count % 10 == 0)
 
-    epochs = 50000
-    goal_average_steps = 195
+    epochs = 2000
     max_number_of_steps = 200
-    batchSize = 50
-    buffer = 500
+    batchSize = 32
+    buffer = 100
     replay = []
     h = 0
     last_time_steps = numpy.ndarray(0)
@@ -126,18 +127,21 @@ if __name__ == '__main__':
 
     # The Q-learn algorithm
     qlearn = QLearn(actions=range(env.action_space.n),
-                    alpha=0.5, gamma=0.90, epsilon=1)
+                    alpha=0.01, gamma=0.90, epsilon=0.5)
 
     for i_episode in xrange(epochs):
         observation = env.reset()
 
         cart_position, pole_angle, cart_velocity, angle_rate_of_change = observation            
-        state = [to_bin(cart_position, cart_position_bins),
-                         to_bin(pole_angle, pole_angle_bins),
-                         to_bin(cart_velocity, cart_velocity_bins),
-                         to_bin(angle_rate_of_change, angle_rate_bins)]
+        # state = [to_bin(cart_position, cart_position_bins),
+        #                  to_bin(pole_angle, pole_angle_bins),
+        #                  to_bin(cart_velocity, cart_velocity_bins),
+        #                  to_bin(angle_rate_of_change, angle_rate_bins)]
 
-        cumulated_reward = 0        
+        state = [cart_position, pole_angle, cart_velocity, angle_rate_of_change]
+
+        cumulated_reward = 0
+
         for t in xrange(max_number_of_steps):           
             # env.render()
 
@@ -156,16 +160,26 @@ if __name__ == '__main__':
 
             # Digitize the observation to get a state
             cart_position, pole_angle, cart_velocity, angle_rate_of_change = observation            
-            nextState = [to_bin(cart_position, cart_position_bins),
-                             to_bin(pole_angle, pole_angle_bins),
-                             to_bin(cart_velocity, cart_velocity_bins),
-                             to_bin(angle_rate_of_change, angle_rate_bins)]
+            # nextState = [to_bin(cart_position, cart_position_bins),
+            #                  to_bin(pole_angle, pole_angle_bins),
+            #                  to_bin(cart_velocity, cart_velocity_bins),
+            #                  to_bin(angle_rate_of_change, angle_rate_bins)]
+
+            nextState = [cart_position, pole_angle, cart_velocity, angle_rate_of_change]
+
 
             if done:
-                reward = -200
+                # reward = -200
                 cumulated_reward += reward
             else:
                 cumulated_reward += reward
+
+
+            # If out of bounds
+            if (cart_position > 2.4 or cart_position < -2.4):
+                # reward = -200
+                print("Out of bounds, reseting")
+                break
 
             # Experience replay storage
             if (len(replay) < buffer): #if buffer not filled, add to it
@@ -192,22 +206,24 @@ if __name__ == '__main__':
                     if not(done): #non-terminal state
                         update = (reward_m + (qlearn.gamma * maxQ))
                     else: #terminal state
-                        update = -200
+                        update = reward_m
                     y[0][action_m] = update
                     X_train.append(numpy.asarray(old_state_m).reshape(4,))
                     y_train.append(y.reshape(2,))
 
                 X_train = numpy.array(X_train)
                 y_train = numpy.array(y_train)                
-                qlearn.network.fit(X_train, y_train, batch_size=batchSize, nb_epoch=1, verbose=1)
+                qlearn.network.fit(X_train, y_train, batch_size=batchSize, nb_epoch=1, verbose=0)
                 state = nextState
                 
             if done: #if reached terminal state, update game status
                 last_time_steps = numpy.append(last_time_steps, [int(t + 1)])
-                if qlearn.epsilon > 0.1:
-                    qlearn.epsilon = qlearn.epsilon - (1.0/epochs)
+                # print reward
                 # print(qlearn.epsilon)
                 break
+
+        if qlearn.epsilon > 0.1:
+            qlearn.epsilon = qlearn.epsilon - (1.0/epochs)
 
         print("Episode {:d} reward score: {:0.2f}".format(i_episode, cumulated_reward))
 
@@ -216,5 +232,5 @@ if __name__ == '__main__':
     print("Overall score: {:0.2f}".format(last_time_steps.mean()))
     print("Best 100 score: {:0.2f}".format(reduce(lambda x, y: x + y, l[-100:]) / len(l[-100:])))
 
-    env.monitor.close()
+    # env.monitor.close()
     # gym.upload('/tmp/cartpole-experiment-1', algorithm_id='vmayoral simple Q-learning', api_key='your-key')
