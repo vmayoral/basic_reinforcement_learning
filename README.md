@@ -1,21 +1,14 @@
 Basic Reinforcement Learning (RL)
 ============================
 
-This repository aims to provide an introduction series to reinforcement learning (RL) by delivering a walkthough on how to code different RL techniques. The code will be building upon a cat-mouse-cheese discrete 2D world where the cat tries to catch the mouse while this one tries fo feed himself. Reinforcement learning will be used to create a mouse player.
-
-![](img/rl_qlearning_1.gif)
-
-*The cat is represented in orange, the mouse in grey and the cheese in yellow.*
+This repository aims to provide an introduction series to reinforcement learning (RL) by delivering a walkthough on how to code different RL techniques.
 
 ### Tutorials:
 - Tutorial 1: [Q-learning](tutorial1/README.md)
 - Tutorial 2: [SARSA](tutorial2/README.md)
 - Tutorial 3: [Exploring OpenAI gym](tutorial3/README.md)
-- Tutorial 4: [Q-learning in OpenAI gym](tutorial3/README.md)
-- Tutorial 5: Deep Q-learning in OpenAI gym (WIP)
-
-
-This work was initially inspired by Terry Stewart’s work and the complementary sessions of Travis DeWolf described at https://github.com/studywolf/blog/tree/master/RL.
+- Tutorial 4: [Q-learning in OpenAI gym](tutorial4/README.md)
+- Tutorial 5: [Deep Q-learning](tutorial5/README.md)
 
 ### References:
 - Chris Watkins, Learning from Delayed Rewards, Cambridge, 1989 ([thesis](http://www.cs.rhul.ac.uk/home/chrisw/new_thesis.pdf))
