@@ -16,7 +16,7 @@ The subsections below describe some of the tests performed over the hyperparamet
 | Algorithm | `epochs:` 100 | `epochs:` 500  | `epochs:` 1000  |
 |-----------|----------------|----------------|-----------------|
 | DQN (default params) [4x30x30x2`]	| 24 (17) | 200 (199) | 200 (168)|
-| DQN (default params), default rewards [4x300x300x2`]	| 106 (43) |  |  |
+| DQN (default params), default rewards [4x300x300x2`]	| 106 (43) | 200 (199) |  |
 
 
 #### Minibatch size
@@ -42,7 +42,7 @@ Changing the rewards proved to be relevant when working with Q-learning however 
 | DQN (default params) [4x30x30x2`]	| 24 (17) | 200 (199) | 200 (168)|
 | DQN (default params) [4x30x30x30x2`]	| 71 (26) | 150 (184) | 120 (126) |
 | DQN (default params), default rewards [4x30x30x2`]	| 9 (15) | 200 (199) | 200 (199) |
-| DQN (default params), default rewards [4x300x300x2`]	| 106 (43) |  |  |
+| DQN (default params), default rewards [4x300x300x2`]	| 106 (43) | 200 (199) |  |
 
 *Each cell represents the best 100 scores for the number of epochs and in parenthesis the average score over all the epochs*
 
