@@ -9,7 +9,7 @@ This code implements the algorithm described at:
 Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A. A., Veness, J., Bellemare, M. G., ... & Petersen, 
 S. (2015). Human-level control through deep reinforcement learning. Nature, 518(7540), 529-533.
 
-https://gist.github.com/wingedsheep/4199594b02138dd427c22a540d6d6b8d
+Code based on @wingedsheep's work at https://gist.github.com/wingedsheep/4199594b02138dd427c22a540d6d6b8d
 
         @author: Victor Mayoral Vilches <victor@erlerobotics.com>
 '''
