@@ -145,6 +145,7 @@ class DeepQ:
             model.add(Activation("linear"))
         optimizer = optimizers.RMSprop(lr=learningRate, rho=0.9, epsilon=1e-06)
         model.compile(loss="mse", optimizer=optimizer)
+        model.summary()
         return model
 
     def createModel(self, inputs, outputs, hiddenLayers, activationType, learningRate):
@@ -160,7 +161,7 @@ class DeepQ:
                 model.add(Activation(activationType))
             
             for index in range(1, len(hiddenLayers)):
-                print("adding layer "+str(index))
+                # print("adding layer "+str(index))
                 layerSize = hiddenLayers[index]
                 model.add(Dense(layerSize, init='lecun_uniform'))
                 if (activationType == "LeakyReLU") :
@@ -213,6 +214,9 @@ class DeepQ:
 
     # calculate the target function
     def calculateTarget(self, qValuesNewState, reward, isFinal):
+        """
+        target = reward(s,a) + gamma * max(Q(s')
+        """
         if isFinal:
             return reward
         else : 
@@ -261,7 +265,9 @@ class DeepQ:
             return self.memory.getMemory(self.memory.getCurrentSize() - 1)
 
     def learnOnMiniBatch(self, miniBatchSize, useTargetNetwork=True):
-        if self.memory.getCurrentSize() > self.learnStart :
+        # Do not learn until we've got self.learnStart samples        
+        if self.memory.getCurrentSize() > self.learnStart:
+            # learn in batches of 128
             miniBatch = self.memory.getMiniBatch(miniBatchSize)
             X_batch = np.empty((0,self.input_size), dtype = np.float64)
             Y_batch = np.empty((0,self.output_size), dtype = np.float64)
@@ -305,7 +311,8 @@ last100ScoresIndex = 0
 last100Filled = False
 
 deepQ = DeepQ(4, 2, memorySize, discountFactor, learningRate, learnStart)
-deepQ.initNetworks([30,30,30])
+# deepQ.initNetworks([30,30,30])
+deepQ.initNetworks([30,30])
 
 stepCounter = 0
 
@@ -315,7 +322,7 @@ for epoch in xrange(epochs):
     print explorationRate
     # number of timesteps
     for t in xrange(steps):
-        env.render()
+        # env.render()
         qValues = deepQ.getQValues(observation)
 
         action = deepQ.selectAction(qValues, explorationRate)
@@ -325,11 +332,11 @@ for epoch in xrange(epochs):
         if (t >= 199):
             print "reached the end! :D"
             done = True
-            reward = 200
+            # reward = 200            
 
         if done and t < 199:
             print "decrease reward"
-            reward -= 200
+            # reward -= 200
         deepQ.addMemory(observation, action, reward, newObservation, done)
 
         if stepCounter >= learnStart:
