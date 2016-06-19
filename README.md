@@ -23,3 +23,4 @@ This work was initially inspired by Terry Stewart’s work and the complementary
 - Reinforcement learning CS9417ML, School of Computer Science & Engineering, UNSW Sydney, http://www.cse.unsw.edu.au/~cs9417ml/RL1/index.html
 - Reinforcement learning blog posts, https://studywolf.wordpress.com/2012/11/25/reinforcement-learning-q-learning-and-exploration/
 - OpenAI gym docs, https://gym.openai.com/docs 
+- Vincent Bons implementations, https://gist.github.com/wingedsheep
