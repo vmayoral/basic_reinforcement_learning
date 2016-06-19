@@ -5,15 +5,20 @@ Up until this tutorial Q-learning algorithm has been storing state-action pairs 
 
 That's where neural networks come in. Or any other type of function approximator, even a simple linear model. We can use a neural network, instead of a lookup table, as our  Q(s,a)Q(s,a)  function. Just like before, it will accept a state and an action and spit out the value of that state-action.
 
-### A bit of theoretical background
-Discuss Deepmind's papers and original DQN algorithm.
-
-(from second paper)
->Reinforcement learning is known to be unstable or even to diverge when a nonlinear function approximator such as a neural network is used to represent the action-value (also known as Q) function20.
+The implementation is available at the `dqn-cartpole.py` script.
 
 ### Playing with the hyperparameters in a DQN:
 
+The subsections below describe some of the tests performed over the hyperparameters of the Deep Q-learning algorithm:
+
 #### Network architecture
+
+| Algorithm | `epochs:` 100 | `epochs:` 500  | `epochs:` 1000  |
+|-----------|----------------|----------------|-----------------|
+| DQN (default params) [4x30x30x2`]	| 24 (17) | 200 (199) | 200 (168)|
+| DQN (default params), default rewards [4x300x300x2`]	| 106 (43) |  |  |
+
+
 #### Minibatch size
 #### Memory size
 #### Learning rate
@@ -37,6 +42,7 @@ Changing the rewards proved to be relevant when working with Q-learning however 
 | DQN (default params) [4x30x30x2`]	| 24 (17) | 200 (199) | 200 (168)|
 | DQN (default params) [4x30x30x30x2`]	| 71 (26) | 150 (184) | 120 (126) |
 | DQN (default params), default rewards [4x30x30x2`]	| 9 (15) | 200 (199) | 200 (199) |
+| DQN (default params), default rewards [4x300x300x2`]	| 106 (43) |  |  |
 
 *Each cell represents the best 100 scores for the number of epochs and in parenthesis the average score over all the epochs*
 

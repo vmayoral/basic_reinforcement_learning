@@ -312,7 +312,8 @@ last100Filled = False
 
 deepQ = DeepQ(4, 2, memorySize, discountFactor, learningRate, learnStart)
 # deepQ.initNetworks([30,30,30])
-deepQ.initNetworks([30,30])
+# deepQ.initNetworks([30,30])
+deepQ.initNetworks([300,300])
 
 stepCounter = 0
 
