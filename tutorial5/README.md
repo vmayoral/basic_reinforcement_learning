@@ -60,6 +60,9 @@ memorySize = 1000000
 
 ```
 
+### A different (non RL) approach
+In the file `evolutionary-ann-cartpole.py` it's presented an evolutionary artificial (deep) neural network that targets the CartPole problem. The algorithm obtains good results in a few epochs however these results don't seem robust.
+
 ### References:
 - Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A. A., Veness, J., Bellemare, M. G., ... & Petersen, S. (2015). Human-level control through deep reinforcement learning. Nature, 518(7540), 529-533. https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
 - Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstra, D., & Riedmiller, M. (2013). Playing atari with deep reinforcement learning. arXiv preprint arXiv:1312.5602. https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf
