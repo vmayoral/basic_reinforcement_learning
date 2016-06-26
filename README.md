@@ -17,3 +17,4 @@ This repository aims to provide an introduction series to reinforcement learning
 - Reinforcement learning blog posts, https://studywolf.wordpress.com/2012/11/25/reinforcement-learning-q-learning-and-exploration/
 - OpenAI gym docs, https://gym.openai.com/docs 
 - Vincent Bons implementations, https://gist.github.com/wingedsheep
+- David Silver's Deep Reinforcement Learning talk, http://videolectures.net/rldm2015_silver_reinforcement_learning/
