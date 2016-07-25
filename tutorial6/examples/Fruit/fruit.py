@@ -6,6 +6,7 @@ from keras.layers.convolutional import Convolution2D
 from keras.layers.core import Dense, Flatten
 from keras.optimizers import SGD, RMSprop
 from matplotlib import pyplot as plt
+import json
 
 GRID_SIZE = 10
 
@@ -67,7 +68,7 @@ def save_img():
         plt.savefig('images/%03i.png' % frame)
         frame += 1
 
-nb_epochs = 500
+nb_epochs = 50
 batch_size = 128
 epsilon = .8
 gamma = .8
@@ -81,6 +82,12 @@ model.add(Dense(100, activation='relu'))
 model.add(Dense(3))
 model.compile(RMSprop(), 'MSE')
 model.summary()
+
+#################
+# RELOAD A MODEL
+#################
+# model = model_from_json(open('model.json').read())
+# model.load_weights('model.h5')
 
 exp_replay = experience_replay(batch_size)
 exp_replay.next()  # Start experience-replay coroutine
@@ -124,7 +131,20 @@ for i in xrange(nb_epochs):
     
     # if (i + 1) % 100 == 0:
     print 'Epoch %i, loss: %.6f' % (i + 1, loss)
-    
+
+#################
+# SAVE THE MODEL
+#################
+# Save trained model weights and architecture, this will be used by the visualization code
+model_name = "model.h5"
+print("Saving the model to "+model_name)
+json_string = model.to_json()
+open('model.json', 'w').write(json_string)
+model.save_weights(model_name)    
+
+#################
+# TEST
+#################
 img_saver = save_img()
 img_saver.next()
 
