@@ -180,7 +180,6 @@ img_saver.close()
 
 resulting in images like the ones pictured below.
 
-![](examples/Fruit/images/fruit_grid10.gif)
 ![](examples/Fruit/images/fruit_grid15.gif)
 
 
