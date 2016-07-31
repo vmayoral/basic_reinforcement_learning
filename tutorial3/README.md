@@ -17,7 +17,8 @@ This tutorial will cover the basics of the new (at the time of writting) OpenAI 
 git clone https://github.com/openai/gym
 cd gym
 pip install -e .[all]
-
+# With Ubuntu 16.04 and latest Anaconda, the following dependencies still needed to install.
+# xvfb libav-tools xorg-dev libsdl2-dev swig cmake
 ```
 
 Installing OpenAI seems to be pretty straightforward with Python 2.X.
