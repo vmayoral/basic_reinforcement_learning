@@ -79,4 +79,5 @@ git clone https://github.com/vmayoral/basic_reinforcement_learning
 cd basic_reinforcement_learning
 python tutorial2/cliff_S.py # or
 python tutorial2/cliff_Q.py
+# Replace ../worlds with ./worlds
 ```
