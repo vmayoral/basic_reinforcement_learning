@@ -74,3 +74,7 @@ In the file `evolutionary-ann-cartpole.py` it's presented an evolutionary artifi
 - https://github.com/sherjilozair/dqn
 - https://github.com/VinF/deer
 
+### Some Dependencies
+conda install nomkl
+
+
