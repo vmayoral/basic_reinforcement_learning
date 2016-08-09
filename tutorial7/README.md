@@ -36,6 +36,8 @@ actions = [action_attack, action_left, action_right]
 
 ### A silly, random DOOM player
 
+![](imgs/doom_random.gif)
+
 The following code snippet will get you a randomized DOOM player:
 
 ```python
