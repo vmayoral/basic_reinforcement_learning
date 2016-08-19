@@ -6,18 +6,12 @@
 Content based on Erle Robotics's whitepaper: <a href="http://erlerobotics.com/whitepaper/robot_gym.pdf">Extending the OpenAI Gym for robotics: a toolkit for reinforcement learning using ROS and Gazebo</a>.
 </p>
 
-- [Architecture](#architecture)
-- [Getting your robot into the gym](#gym)  
-- [Results](#results)
-- [Demo](#demo)
-- [Resources](#resources)  
-
 The [OpenAI Gym](http://gym.openai.com) is a is a toolkit for reinforcement learning research that has recently gained popularity in the machine learning community. The work presented here follows the same baseline structure displayed by researchers in the OpenAI Gym, and builds a gazebo environment on top of that. OpenAI Gym focuses on the episodic setting of RL, aiming to maximize the expectation of total reward each episode and to get an acceptable level of performance as fast as possible. This toolkit aims to integrate the Gym API with robotic hardware, validating reinforcement learning algorithms in real environments. Real-world operation is achieved combining [Gazebo simulator](http://gazebosim.org), a 3D modeling and rendering tool, with the [Robot Operating System](http://ros.org), a set of libraries and tools that help software developers create robot applications.
 
 As [discussed previously](http://blog.deeprobotics.es/robots,/ai,/deep/learning,/rl,/reinforcement/learning/2016/07/06/rl-intro/), the main problem with RL in robotics is the high cost per trial, which is not only the economical cost but also the long time needed to perform learning operations. Another known issue is that learning with a real robot in a real environment can be dangerous, specially with flying robots like quad-copters. In order to overcome this difficulties, advanced robotics simulators like Gazebo have been developed which help saving costs, reducing time and speeding up the simulation.
 
-<div id='architecture'/>
-## Architecture
+##Architecture
+
 
 <div style="align: left; text-align:center;">
     <img src="https://raw.githubusercontent.com/vmayoral/vmayoral.github.io/master/images/gym_architecture.png"/>
@@ -37,7 +31,6 @@ It's relevant to note that within the architecture proposed, our team considered
 </p>
 
 
-<div id='gym'/>
 ## Getting your robot into the gym
 
 ![](https://raw.githubusercontent.com/vmayoral/vmayoral.github.io/master/images/turtlec2_new.png)
@@ -163,7 +156,6 @@ env.close()
 
 By default, you'll see that the environment gets launched without a graphical interface but you can bring it up by typing `gzclient` into a new command line prompt. 
 
-<div id='results'/>
 ## Results
 
 Currently, plotting tools are not completely integrated within the gym APIs (e.g.: `env.monitor` could be further improved in the `Gazebo` abstraction) however it's possible to get life plots of the robot performance like the one that follows:
@@ -186,14 +178,11 @@ Comparing results one can tell that in this particular scenario, the learning in
 
 This smoother behaviour where forward actions are being exploited in straight tracks leads to higher maximum cumulated rewards. We get values near 3500 in Sarsa while just get cumulated rewards around 2500 in Q-Learning. Running Sarsa for more episodes will cause to get higher average rewards.
 
-<div id='demo'/>
 ## Demo
 
-<center>
-<iframe width="640" height="360" src="https://www.youtube.com/embed/8hxCBkgp95k" frameborder="0" allowfullscreen></iframe>
-</center>
+https://www.youtube.com/embed/8hxCBkgp95k
 
-<div id='resources'/>
+
 ## Resources
 
 - Extending the OpenAI Gym for robotics: a toolkit
