@@ -11,6 +11,7 @@ This repository aims to provide an introduction series to reinforcement learning
 - Tutorial 5: [Deep Q-learning (DQN)](tutorial5/README.md)
 - Tutorial 6: [Deep Convolutional Q-learning](tutorial6/README.md)
 - Tutorial 7: [Reinforcement Learning with ROS and Gazebo](tutorial7/README.md)
+- Tutorial 8: [Reinforcement Learning in DOOM](tutorial8/README.md)
 
 ### References:
 - Chris Watkins, Learning from Delayed Rewards, Cambridge, 1989 ([thesis](http://www.cs.rhul.ac.uk/home/chrisw/new_thesis.pdf))
