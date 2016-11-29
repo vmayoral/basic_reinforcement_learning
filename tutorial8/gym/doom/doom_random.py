@@ -4,12 +4,14 @@ Doom AI player using Deep Q-Learning
     @author: Victor Mayoral Vilches <victor@erlerobotics.com>
 '''
 import gym
+import ppaquette_gym_doom
 import numpy
 import random
 import pandas
 
 if __name__ == '__main__':
-    env = gym.make('DoomBasic-v0')
+    #env = gym.make('DoomBasic-v0')
+    env = gym.make('ppaquette/DoomBasic-v0')
     env.monitor.start('/tmp/doom-experiment-1', force=True)
         # video_callable=lambda count: count % 10 == 0)
 
