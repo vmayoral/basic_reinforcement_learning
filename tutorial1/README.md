@@ -266,6 +266,3 @@ git clone https://github.com/vmayoral/basic_reinforcement_learning
 cd basic_reinforcement_learning
 python tutorial1/egoMouseLook.py
 ```
-Replace line 131 in tutorial1/egoMouseLook.py
-with
-world = cellular.World(Cell, directions=directions, filename='./worlds/waco.txt')
