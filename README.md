@@ -7,14 +7,14 @@ This repository aims to provide an introduction series to reinforcement learning
 A quick background review of RL is available [here](BACKGROUND.md).
 
 ### Tutorials:
-- Tutorial 1: [Q-learning](tutorial1/README.md)
-- Tutorial 2: [SARSA](tutorial2/README.md)
-- Tutorial 3: [Exploring OpenAI gym](tutorial3/README.md)
-- Tutorial 4: [Q-learning in OpenAI gym](tutorial4/README.md)
-- Tutorial 5: [Deep Q-learning (DQN)](tutorial5/README.md)
-- Tutorial 6: [Deep Convolutional Q-learning](tutorial6/README.md)
-- Tutorial 7: [Reinforcement Learning with ROS and Gazebo](tutorial7/README.md)
-- Tutorial 8: [Reinforcement Learning in DOOM](tutorial8/README.md) (**unfinished**)
+- [x] Tutorial 1: [Q-learning](tutorial1/README.md)
+- [x] Tutorial 2: [SARSA](tutorial2/README.md)
+- [x] Tutorial 3: [Exploring OpenAI gym](tutorial3/README.md)
+- [x] Tutorial 4: [Q-learning in OpenAI gym](tutorial4/README.md)
+- [x] Tutorial 5: [Deep Q-learning (DQN)](tutorial5/README.md)
+- [x] Tutorial 6: [Deep Convolutional Q-learning](tutorial6/README.md)
+- [x] Tutorial 7: [Reinforcement Learning with ROS and Gazebo](tutorial7/README.md)
+- [ ] Tutorial 8: [Reinforcement Learning in DOOM](tutorial8/README.md) (**unfinished**)
 
 ### References:
 - Chris Watkins, Learning from Delayed Rewards, Cambridge, 1989 ([thesis](http://www.cs.rhul.ac.uk/home/chrisw/new_thesis.pdf))
