@@ -1,4 +1,5 @@
-#Playing DOOM with Deep Reinforcement Learning
+Playing DOOM with Deep Reinforcement Learning (unfinished)
+-------
 
 This tutorial implements an agent that artificially learns how to play the game [DOOM](https://es.wikipedia.org/wiki/Doom) using deep learning through reinfocement learning techniques. The AI programmed *learns* how to play by using solely the visual input provided by the images and the rewards that come from the environment.
 
