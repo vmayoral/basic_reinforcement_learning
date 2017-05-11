@@ -26,7 +26,7 @@ class QLearn:
     def learnQ(self, state, action, reward, value):
         '''
         Q-learning:
-            Q(s, a) += alpha * (reward(s,a) + max(Q(s') - Q(s,a))            
+            Q(s, a) += alpha * (reward(s,a) + max(Q(s') - Q(s,a))
         '''
         oldv = self.q.get((state, action), None)
         if oldv is None:
@@ -41,11 +41,11 @@ class QLearn:
         if random.random() < self.epsilon:
             minQ = min(q); mag = max(abs(minQ), abs(maxQ))
             # add random values to all the actions, recalculate maxQ
-            q = [q[i] + random.random() * mag - .5 * mag for i in range(len(self.actions))] 
+            q = [q[i] + random.random() * mag - .5 * mag for i in range(len(self.actions))]
             maxQ = max(q)
 
         count = q.count(maxQ)
-        # In case there're several state-action max values 
+        # In case there're several state-action max values
         # we select a random one among them
         if count > 1:
             best = [i for i in range(len(self.actions)) if q[i] == maxQ]
@@ -53,7 +53,7 @@ class QLearn:
         else:
             i = q.index(maxQ)
 
-        action = self.actions[i]        
+        action = self.actions[i]
         if return_q: # if they want it, give it!
             return action, q
         return action
@@ -62,7 +62,7 @@ class QLearn:
         maxqnew = max([self.getQ(state2, a) for a in self.actions])
         self.learnQ(state1, action1, reward, reward + self.gamma*maxqnew)
 
-def build_state(features):    
+def build_state(features):
     return int("".join(map(lambda feature: str(int(feature)), features)))
 
 def to_bin(value, bins):
@@ -70,7 +70,12 @@ def to_bin(value, bins):
 
 if __name__ == '__main__':
     env = gym.make('CartPole-v0')
-    env.monitor.start('/tmp/cartpole-experiment-1', force=True)
+
+    # DEPRECATED as of 12/23/2016
+    # env.monitor.start('/tmp/cartpole-experiment-1', force=True)
+    #    # video_callable=lambda count: count % 10 == 0)
+    
+    env = gym.wrappers.Monitor(env, '/tmp/cartpole-experiment-1', force=True)
         # video_callable=lambda count: count % 10 == 0)
 
     goal_average_steps = 195
@@ -96,13 +101,13 @@ if __name__ == '__main__':
     for i_episode in xrange(3000):
         observation = env.reset()
 
-        cart_position, pole_angle, cart_velocity, angle_rate_of_change = observation            
+        cart_position, pole_angle, cart_velocity, angle_rate_of_change = observation
         state = build_state([to_bin(cart_position, cart_position_bins),
                          to_bin(pole_angle, pole_angle_bins),
                          to_bin(cart_velocity, cart_velocity_bins),
                          to_bin(angle_rate_of_change, angle_rate_bins)])
 
-        for t in xrange(max_number_of_steps):	    	
+        for t in xrange(max_number_of_steps):
             # env.render()
 
             # Pick an action based on the current state
@@ -111,7 +116,7 @@ if __name__ == '__main__':
             observation, reward, done, info = env.step(action)
 
             # Digitize the observation to get a state
-            cart_position, pole_angle, cart_velocity, angle_rate_of_change = observation            
+            cart_position, pole_angle, cart_velocity, angle_rate_of_change = observation
             nextState = build_state([to_bin(cart_position, cart_position_bins),
                              to_bin(pole_angle, pole_angle_bins),
                              to_bin(cart_velocity, cart_velocity_bins),
@@ -132,7 +137,7 @@ if __name__ == '__main__':
                 reward = -200
                 qlearn.learn(state, action, reward, nextState)
                 last_time_steps = numpy.append(last_time_steps, [int(t + 1)])
-                break    
+                break
 
     l = last_time_steps.tolist()
     l.sort()
