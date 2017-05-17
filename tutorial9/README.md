@@ -1,7 +1,6 @@
 # Deep Deterministic Policy Gradients (DDPG)
 In this tutorial we'll cover how to implement the Deep Deterministic Policy Gradients (DDPG), a policy-gradient actor-critic algorithm, that is off-policy and model-free.
-
-Refer to the corresponding notebook.
+Refer to the [corresponding notebook](ddpg_notebook.ipynb).
 
 
 ### Resources:

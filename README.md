@@ -15,6 +15,8 @@ A quick background review of RL is available [here](BACKGROUND.md).
 - [x] Tutorial 6: [Deep Convolutional Q-learning](tutorial6/README.md)
 - [x] Tutorial 7: [Reinforcement Learning with ROS and Gazebo](tutorial7/README.md)
 - [ ] Tutorial 8: [Reinforcement Learning in DOOM](tutorial8/README.md) (**unfinished**)
+- [x] Tutorial 9: [Deep Deterministic Policy Gradients (DDPG)](tutorial9/README.md)
+- [ ] Tutorial 10: [Guided Policy Search (GPS)](tutorial10/README.md) (**WIP**)
 
 ### References:
 - Chris Watkins, Learning from Delayed Rewards, Cambridge, 1989 ([thesis](http://www.cs.rhul.ac.uk/home/chrisw/new_thesis.pdf))

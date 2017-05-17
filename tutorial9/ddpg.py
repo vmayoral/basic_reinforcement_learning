@@ -37,7 +37,7 @@ TAU = 0.001
 #   Utility Parameters
 # ===========================
 # Render gym env during training
-RENDER_ENV = True
+RENDER_ENV = False
 # Use Gym Monitor
 GYM_MONITOR_EN = True
 # Gym environment
