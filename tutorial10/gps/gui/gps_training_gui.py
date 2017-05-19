@@ -289,21 +289,21 @@ class GPSTrainingGUI(object):
         controller entropies, and initial/final KL divergences for BADMM.
         """
         self.set_output_text(self._hyperparams['experiment_name'])
-        if isinstance(algorithm, AlgorithmMDGPS) or isinstance(algorithm, AlgorithmBADMM):
-            condition_titles = '%3s | %8s %12s' % ('', '', '')
-            itr_data_fields  = '%3s | %8s %12s' % ('itr', 'avg_cost', 'avg_pol_cost')
-        else:
-            condition_titles = '%3s | %8s' % ('', '')
-            itr_data_fields  = '%3s | %8s' % ('itr', 'avg_cost')
+        # if isinstance(algorithm, AlgorithmMDGPS) or isinstance(algorithm, AlgorithmBADMM):
+        #     condition_titles = '%3s | %8s %12s' % ('', '', '')
+        #     itr_data_fields  = '%3s | %8s %12s' % ('itr', 'avg_cost', 'avg_pol_cost')
+        # else:
+        condition_titles = '%3s | %8s' % ('', '')
+        itr_data_fields  = '%3s | %8s' % ('itr', 'avg_cost')
         for m in range(algorithm.M):
             condition_titles += ' | %8s %9s %-7d' % ('', 'condition', m)
             itr_data_fields  += ' | %8s %8s %8s' % ('  cost  ', '  step  ', 'entropy ')
-            if isinstance(algorithm, AlgorithmBADMM):
-                condition_titles += ' %8s %8s %8s' % ('', '', '')
-                itr_data_fields  += ' %8s %8s %8s' % ('pol_cost', 'kl_div_i', 'kl_div_f')
-            elif isinstance(algorithm, AlgorithmMDGPS):
-                condition_titles += ' %8s' % ('')
-                itr_data_fields  += ' %8s' % ('pol_cost')
+            # if isinstance(algorithm, AlgorithmBADMM):
+            #     condition_titles += ' %8s %8s %8s' % ('', '', '')
+            #     itr_data_fields  += ' %8s %8s %8s' % ('pol_cost', 'kl_div_i', 'kl_div_f')
+            # elif isinstance(algorithm, AlgorithmMDGPS):
+            #     condition_titles += ' %8s' % ('')
+            #     itr_data_fields  += ' %8s' % ('pol_cost')
         self.append_output_text(condition_titles)
         self.append_output_text(itr_data_fields)
 
@@ -329,16 +329,16 @@ class GPSTrainingGUI(object):
             entropy = 2*np.sum(np.log(np.diagonal(algorithm.prev[m].traj_distr.chol_pol_covar,
                     axis1=1, axis2=2)))
             itr_data += ' | %8.2f %8.2f %8.2f' % (cost, step, entropy)
-            if isinstance(algorithm, AlgorithmBADMM):
-                kl_div_i = algorithm.cur[m].pol_info.init_kl.mean()
-                kl_div_f = algorithm.cur[m].pol_info.prev_kl.mean()
-                itr_data += ' %8.2f %8.2f %8.2f' % (pol_costs[m], kl_div_i, kl_div_f)
-            elif isinstance(algorithm, AlgorithmMDGPS):
-                # TODO: Change for test/train better.
-                if test_idx == algorithm._hyperparams['train_conditions']:
-                    itr_data += ' %8.2f' % (pol_costs[m])
-                else:
-                    itr_data += ' %8s' % ("N/A")
+            # if isinstance(algorithm, AlgorithmBADMM):
+            #     kl_div_i = algorithm.cur[m].pol_info.init_kl.mean()
+            #     kl_div_f = algorithm.cur[m].pol_info.prev_kl.mean()
+            #     itr_data += ' %8.2f %8.2f %8.2f' % (pol_costs[m], kl_div_i, kl_div_f)
+            # elif isinstance(algorithm, AlgorithmMDGPS):
+            #     # TODO: Change for test/train better.
+            #     if test_idx == algorithm._hyperparams['train_conditions']:
+            #         itr_data += ' %8.2f' % (pol_costs[m])
+            #     else:
+            #         itr_data += ' %8s' % ("N/A")
         self.append_output_text(itr_data)
 
     def _update_trajectory_visualizations(self, algorithm, agent,
@@ -352,7 +352,7 @@ class GPSTrainingGUI(object):
             self._traj_visualizer.clear(m)
             self._traj_visualizer.set_lim(i=m, xlim=xlim, ylim=ylim, zlim=zlim)
             if algorithm._hyperparams['fit_dynamics']:
-                self._update_linear_gaussian_controller_plots(algorithm, agent, m)                                
+                self._update_linear_gaussian_controller_plots(algorithm, agent, m)
             self._update_samples_plots(traj_sample_lists, m, 'green', 'Trajectory Samples')
             if pol_sample_lists:
                 self._update_samples_plots(pol_sample_lists,  m, 'blue',  'Policy Samples')
@@ -370,7 +370,7 @@ class GPSTrainingGUI(object):
         for sample_list in sample_lists:
             for sample in sample_list.get_samples():
                 ee_pt = sample.get(END_EFFECTOR_POINTS)
-                for i in range(ee_pt.shape[1]/3):
+                for i in range(int(ee_pt.shape[1]/3)):
                     ee_pt_i = ee_pt[:, 3*i+0:3*i+3]
                     all_eept = np.r_[all_eept, ee_pt_i]
         min_xyz = np.amin(all_eept, axis=0)
