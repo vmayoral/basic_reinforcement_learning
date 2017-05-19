@@ -5,3 +5,4 @@ save.p
 */__pycache__/
 */.experiments
 *.pyc
+*/__pycache__/*
