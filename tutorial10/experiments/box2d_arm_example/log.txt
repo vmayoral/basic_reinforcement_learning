@@ -1,0 +1,25 @@
+
+
+exp_name:   box2d_arm_example_05-04-17_18-05
+alg_type:   AlgorithmTrajOpt
+alg_dyn:    DynamicsLRPrior
+alg_cost:   CostSum(CostAction, CostState)
+iterations: 10
+conditions: 1
+samples:    5
+
+
+
+exp_name:   box2d_arm_example_05-04-17_18-05
+alg_type:   AlgorithmTrajOpt
+alg_dyn:    DynamicsLRPrior
+alg_cost:   CostSum(CostAction, CostState)
+iterations: 10
+conditions: 1
+samples:    5
+
+box2d_arm_example_05-04-17_18-05
+    |          |          condition 0      
+itr | avg_cost |   cost     step   entropy 
+  0 |   387.49 |   387.49     0.20  -460.52
+  1 |   311.21 |   311.21     0.36  -461.35
