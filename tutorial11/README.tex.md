@@ -73,8 +73,8 @@ $$
 
 This results in an algorithm called "tabular Q-learning" whose algorithm follows:
 
-```
-Start with $Q_0 (s,a)$ for all $s$, $a$.
+
+>Start with $Q_0 (s,a)$ for all $s$, $a$.
 Get initial state $s$
 For $k=1,2, ...$ till convergence:
   Sample action $a$, get next state $s'$
@@ -85,6 +85,6 @@ For $k=1,2, ...$ till convergence:
     $target = R(s,a,s') + \gamma \underset{a'}{max} Q_k (s',a')$
   Q_{k+1} (s,a) \leftarrow (1 - \alpha) \cdot Q_k (s,a) + \alpha[target]
   s \leftarrow s'
-```
 
-During the inital phases of learning, choosing greedily isn't optimal.
+
+During the inital phases of learning, choosing greedily isn't optimal. If you only choose actions greedily you are restricting yourself to not explore alternative strategies.
