@@ -73,6 +73,7 @@ $$
 
 This results in an algorithm called "tabular Q-learning" whose algorithm follows:
 
+##### Algorithm
 
 - Start with $Q_0 (s,a)$ for all $s$, $a$.
 - Get initial state $s$
@@ -83,8 +84,15 @@ This results in an algorithm called "tabular Q-learning" whose algorithm follows
     - Sample new initial state $s'$
   - else:
     - $target = R(s,a,s') + \gamma \underset{a'}{max} Q_k (s',a')$
-  - Q_{k+1} (s,a) \leftarrow (1 - \alpha) \cdot Q_k (s,a) + \alpha[target]
-  - s \leftarrow s'
+  - $Q_{k+1} (s,a) \leftarrow (1 - \alpha) \cdot Q_k (s,a) + \alpha[target]$
+  - $s \leftarrow s'$
 
 
 During the inital phases of learning, choosing greedily isn't optimal. If you only choose actions greedily you are restricting yourself to not explore alternative strategies.
+
+Instead, what's used is $\epsilon-Greedy$.
+
+Q-learning converges to optimal policy -- even if you're acting suboptimally!. This is called off-policy learning. Caveats:
+- You have to explore enough
+- You have to eventually make the learning rate small enough
+- ... but not decrease it too fast, otherwise it will converge to wrong values.
