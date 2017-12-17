@@ -121,8 +121,11 @@ When one runs DQN in a new problem it might <img src="https://rawgit.com/vmayora
     - Store transition ($\phi_t, a_t, r_t, \phi_{t+1}$) in $D$
     - Sample random minibatch of transition (($\phi_j, a_j, r_j, \phi_{j+1}$))
     - Set $$
-    f(x) = \left\{
-	       <p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/f34c1d92b67da7e8f3e981fa18f54e4b.svg?invert_in_darkmode" align=middle width=164.99966999999998pt height=52.66569pt/></p>
+    y_j = \left\{
+	       <p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/583f0b49d413507672b398a769424fd2.svg?invert_in_darkmode" align=middle width=495.4223999999999pt height=35.479455pt/></p>
 	     \right.
        $$
-    - Perform a gradient
+    - Perform a gradient descent on $(y_j - Q(\phi_j, a_j; \theta))^2$ with respect to the network parameters $\theta$
+    - Every $C$ steps reset $\hat{Q} = Q$
+  - **End For**
+- **End For**
