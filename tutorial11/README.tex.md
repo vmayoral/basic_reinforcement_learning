@@ -36,3 +36,6 @@ V^\pi_k(s) \leftarrow  \sum_{s'} P(s' | s,\pi(s)) \cdot (R(s,\pi(s),s') + \gamma
 $$
 
 We don't get to choose the action, it's frozen to $\pi(s)$. We compute the value of the policy $\pi$. We are now in a different MDP where every state, the action has been chosen for you. There's no choice.
+
+### Lesson 2: Sampling-based Approximations and Function Fitting
+([video](https://www.youtube.com/watch?v=qO-HUo0LsO4))
