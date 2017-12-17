@@ -61,6 +61,7 @@ Rewrite it as an expectation:
 
 This results in an algorithm called "tabular Q-learning" whose algorithm follows:
 
+##### Algorithm
 
 - Start with <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/61037e77a80d0985cf3ec0676f94cf69.svg?invert_in_darkmode" align=middle width=56.855865pt height=24.65759999999998pt/> for all <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/6f9bad7347b91ceebebd3ad7e6f6f2d1.svg?invert_in_darkmode" align=middle width=7.705549500000004pt height=14.155350000000013pt/>, <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/44bc9d542a92714cac84e01cbbb7fd61.svg?invert_in_darkmode" align=middle width=8.689230000000004pt height=14.155350000000013pt/>.
 - Get initial state <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/6f9bad7347b91ceebebd3ad7e6f6f2d1.svg?invert_in_darkmode" align=middle width=7.705549500000004pt height=14.155350000000013pt/>
@@ -71,8 +72,15 @@ This results in an algorithm called "tabular Q-learning" whose algorithm follows
     - Sample new initial state $s'$
   - else:
     - $target = R(s,a,s') + \gamma \underset{a'}{max} Q_k (s',a')$
-  - Q_{k+1} (s,a) \leftarrow (1 - \alpha) \cdot Q_k (s,a) + \alpha[target]
-  - s \leftarrow s'
+  - <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/9d8af80ca3acefb0a628b4a0c227acf6.svg?invert_in_darkmode" align=middle width=305.216505pt height=24.65759999999998pt/>
+  - <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/320bcc67abc355b59c9bd9b9edd7ee55.svg?invert_in_darkmode" align=middle width=44.771595000000005pt height=24.716340000000006pt/>
 
 
 During the inital phases of learning, choosing greedily isn't optimal. If you only choose actions greedily you are restricting yourself to not explore alternative strategies.
+
+Instead, what's used is <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/c7bd2b68b4bf6fc5be44f25166648272.svg?invert_in_darkmode" align=middle width=80.074665pt height=22.831379999999992pt/>.
+
+Q-learning converges to optimal policy -- even if you're acting suboptimally!. This is called off-policy learning. Caveats:
+- You have to explore enough
+- You have to eventually make the learning rate small enough
+- ... but not decrease it too fast, otherwise it will converge to wrong values.
