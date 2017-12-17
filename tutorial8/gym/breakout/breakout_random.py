@@ -27,15 +27,18 @@ if __name__ == '__main__':
 
     action_right = [False]*43
     action_right[10] = True
-    
+
     action_left = [False]*43
     action_left[11] = True
 
     actions = [action_attack, action_left, action_right]
 
+    done = False
+    observation = env.reset()
     for i_episode in xrange(30):
-        observation = env.reset()
-        for t in xrange(max_number_of_steps):	    	
+        if done:
+            observation = env.reset()
+        for t in xrange(max_number_of_steps):
             env.render()
             # Execute the action and get feedback
             observation, reward, done, info = env.step(env.action_space.sample())

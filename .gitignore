@@ -6,3 +6,5 @@ save.p
 */.experiments
 *.pyc
 */__pycache__/*
+.DS_Store
+temp.ppm
