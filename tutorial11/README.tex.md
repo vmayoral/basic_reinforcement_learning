@@ -159,3 +159,5 @@ Dueling DQN, make two separate channels:
 Summing this up (to get the output estimate of the Q-value) it will work much better in practice.
 
 You can go beyond $\epsilon-Greedy$ exploration, one good way of doing exploration with NNs is to add noise to the parameters of the NNs.
+
+Let's now get 

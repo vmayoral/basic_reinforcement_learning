@@ -29,3 +29,4 @@ A quick background review of RL is available [here](BACKGROUND.md).
 - David Silver's Deep Reinforcement Learning talk, http://videolectures.net/rldm2015_silver_reinforcement_learning/
 - Brockman, G., Cheung, V., Pettersson, L., Schneider, J., Schulman, J., Tang, J., & Zaremba, W. (2016). OpenAI Gym. arXiv preprint arXiv:1606.01540.
 - https://sites.google.com/view/deep-rl-bootcamp/lectures
+- https://github.com/vmayoral/gym-cryptocurrencies
