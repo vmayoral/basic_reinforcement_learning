@@ -6,6 +6,7 @@ will get benchmarked using OpenAI gym-based environments.
 ### Index
 - [Lesson 1](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-1-deep-rl-bootcamp-lecture-1-motivation--overview--exact-solution-methods)
 - [Lesson 2](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-2-sampling-based-approximations-and-function-fitting)
+- [Lesson 3](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-3-deep-q-networks)
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -135,7 +136,7 @@ When one runs DQN in a new problem it might $10^6$ transitions to get some reaso
     - Set $$
     y_j = \left\{
 	       \begin{array}{ll}
-      		 r_j      & \mathrm{if episode terminates at step j + 1\ }
+      		 r_j      & \mathrm{if\ } episode terminates at step j + 1\\
       		 r_j + \gamma max_{a'} \hat{Q}(\phi_{j+1},a';\hat{\theta}) & \mathrm{otherwise\ }
 	       \end{array}
 	     \right.
@@ -144,3 +145,17 @@ When one runs DQN in a new problem it might $10^6$ transitions to get some reaso
     - Every $C$ steps reset $\hat{Q} = Q$
   - **End For**
 - **End For**
+
+Preprocessed $\phi$ elements correspond to 4 frames of the game stacked together as an input to the network
+representing the state (this worked for them).
+
+Value-based methods tend to be more robust parameter-wise. Much more than policy gradient methods. People in DeepMind is running algorithms with barely no variations on the hyperparams.
+
+Double DQN, an upgrade of DQN. It exploits the fact that you have two networks: the online network and the target network. The idea is to use your online network to select the best action but then you use the target network to get the value estimate. You separate the $argmax$ from selecting the value.
+
+Dueling DQN, make two separate channels:
+- a channel that output a single channel, the value
+- and another channel that outputs one number per action, the advantage
+Summing this up (to get the output estimate of the Q-value) it will work much better in practice.
+
+You can go beyond $\epsilon-Greedy$ exploration, one good way of doing exploration with NNs is to add noise to the parameters of the NNs.
