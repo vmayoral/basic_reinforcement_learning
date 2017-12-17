@@ -3,6 +3,10 @@
 This tutorial will review the State Of The Art (SOTA) of RL using the [Deep RL Bootcamp](https://sites.google.com/view/deep-rl-bootcamp/lectures). Techniques
 will get benchmarked using OpenAI gym-based environments.
 
+### Index
+- [Lesson 1](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-1-deep-rl-bootcamp-lecture-1-motivation--overview--exact-solution-methods)
+- [Lesson 2](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-2-sampling-based-approximations-and-function-fitting)
+
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
 ([video](https://www.youtube.com/watch?v=qaMdN6LS9rA))
@@ -73,7 +77,7 @@ $$
 
 This results in an algorithm called "tabular Q-learning" whose algorithm follows:
 
-##### Algorithm
+##### Algorithm: Tabular Q-Learning
 
 - Start with $Q_0 (s,a)$ for all $s$, $a$.
 - Get initial state $s$
@@ -96,3 +100,32 @@ Q-learning converges to optimal policy -- even if you're acting suboptimally!. T
 - You have to explore enough
 - You have to eventually make the learning rate small enough
 - ... but not decrease it too fast, otherwise it will converge to wrong values.
+
+The reinforcement learning performed by human race is a collective learning practice where we're not just looking at the experience of ourselves but also looking at the experience of other human beings.
+
+Getting tabular Q-learning to work is unfeasible for most environments thereby "Approximate Q-Learning" is introduced. This typically gets represented through a parametrized Q-function: $Q_\theta(s,a)$ that can get represented with linear functions or with more complicated neural nets.
+
+In some case, "Tabular Q-learning" is a special case of "Approximate Q-learning".
+
+### Lesson 3: Deep Q-Networks
+#### Notes from lesson
+([video](https://www.youtube.com/watch?v=fevMOp5TDQs&t=3s))
+
+The whole idea behind DQN is to make Q-learning look like it's supervised learning.
+
+Two ideas to address the correlation between updates:
+- Experience replay -> better data efficiency
+- Use older set of weights to compute the targets (target network). This is good because if we fix this target weights then basically we have a fixed network that's producing our estimates and we have also those experience replay buffers, something like a dataset which we're sampling data from. So what we do with this is that we feed this Q values to something that almost looks like a fixed set of targets.
+
+When one runs DQN in a new problem it might $10^6$ transitions to get some reasonable results.
+
+##### Algorithm: Deep Q-Learning (DQN)
+- Initialize replay memory $D$ to capacity $N$
+- Initialize action-value function Q with random weights $\theta$
+- Initialize target action-value function \hat{Q} with weights $\hat{\theta} = \theta$
+- For $episode = 1,M$ do:
+  - Initialize sequence $s_1 = {x_1}$ and preprocessed sequence $\phi_1 = \phi(s_1)
+  - For $t = 1,T$ do
+    - With probability $\epsilon$ select a random action $a_t$
+    - otherwise select $a_t = argmax_a Q(\phi(s_t),a;\theta)
+    - Execute action $a_t$ in emulator and observe reward $r$, and image $x_{t+1}$
