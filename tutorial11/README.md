@@ -111,7 +111,18 @@ When one runs DQN in a new problem it might <img src="https://rawgit.com/vmayora
 - Initialize replay memory <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/78ec2b7008296ce0561cf83393cb746d.svg?invert_in_darkmode" align=middle width=14.066250000000002pt height=22.46574pt/> to capacity <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/f9c4988898e7f532b9f826a75014ed3c.svg?invert_in_darkmode" align=middle width=14.999985000000004pt height=22.46574pt/>
 - Initialize action-value function Q with random weights <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.173588500000005pt height=22.831379999999992pt/>
 - Initialize target action-value function \hat{Q} with weights <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/5796af6b4874e982d27e2266fc65b534.svg?invert_in_darkmode" align=middle width=38.26482pt height=31.50708000000001pt/>
-- For <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/36ce91b4d1d5f7f6f090d39a4bcf7571.svg?invert_in_darkmode" align=middle width=108.65414999999999pt height=22.831379999999992pt/> do:
-  - Initialize sequence <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4f74f0385042e12b8901d4278c3c23de.svg?invert_in_darkmode" align=middle width=52.9452pt height=14.155350000000013pt/> and preprocessed sequence <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/88e1a84568eb140605f74a6c1bf9dd24.svg?invert_in_darkmode" align=middle width=125.53265999999999pt height=24.65759999999998pt/>t = 1,T<img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/c389bb8f5aa5cb6ad56cc63b3c46c0c1.svg?invert_in_darkmode" align=middle width=153.54438pt height=22.831379999999992pt/>\epsilon$ select a random action $a_t$
-    - otherwise select $a_t = argmax_a Q(\phi(s_t),a;\theta)
+- **For** <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/36ce91b4d1d5f7f6f090d39a4bcf7571.svg?invert_in_darkmode" align=middle width=108.65414999999999pt height=22.831379999999992pt/> **do**:
+  - Initialize sequence <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4f74f0385042e12b8901d4278c3c23de.svg?invert_in_darkmode" align=middle width=52.9452pt height=14.155350000000013pt/> and preprocessed sequence <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/e3e4b0ecfb9ecde9eac8cb93b8461313.svg?invert_in_darkmode" align=middle width=76.74661499999999pt height=24.65759999999998pt/>
+  - **For** <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/e5f2e56ef7cd46d1e431ff999386ad17.svg?invert_in_darkmode" align=middle width=55.268235000000004pt height=22.46574pt/> **do**
+    - With probability $\epsilon$ select a random action $a_t$
+    - otherwise select $a_t = argmax_a Q(\phi(s_t),a;\theta)$
     - Execute action $a_t$ in emulator and observe reward $r$, and image $x_{t+1}$
+    - Set $s_{t+1} = s, a_t, x_{t+1}$ and preprocess $\phi_{t+1} = \phi(s_{t+1})$
+    - Store transition ($\phi_t, a_t, r_t, \phi_{t+1}$) in $D$
+    - Sample random minibatch of transition (($\phi_j, a_j, r_j, \phi_{j+1}$))
+    - Set $$
+    f(x) = \left\{
+	       <p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/f34c1d92b67da7e8f3e981fa18f54e4b.svg?invert_in_darkmode" align=middle width=164.99966999999998pt height=52.66569pt/></p>
+	     \right.
+       $$
+    - Perform a gradient
