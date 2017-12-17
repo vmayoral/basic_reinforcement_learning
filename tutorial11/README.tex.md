@@ -123,9 +123,22 @@ When one runs DQN in a new problem it might $10^6$ transitions to get some reaso
 - Initialize replay memory $D$ to capacity $N$
 - Initialize action-value function Q with random weights $\theta$
 - Initialize target action-value function \hat{Q} with weights $\hat{\theta} = \theta$
-- For $episode = 1,M$ do:
-  - Initialize sequence $s_1 = {x_1}$ and preprocessed sequence $\phi_1 = \phi(s_1)
-  - For $t = 1,T$ do
+- **For** $episode = 1,M$ **do**:
+  - Initialize sequence $s_1 = {x_1}$ and preprocessed sequence $\phi_1 = \phi(s_1)$
+  - **For** $t = 1,T$ **do**
     - With probability $\epsilon$ select a random action $a_t$
-    - otherwise select $a_t = argmax_a Q(\phi(s_t),a;\theta)
+    - otherwise select $a_t = argmax_a Q(\phi(s_t),a;\theta)$
     - Execute action $a_t$ in emulator and observe reward $r$, and image $x_{t+1}$
+    - Set $s_{t+1} = s, a_t, x_{t+1}$ and preprocess $\phi_{t+1} = \phi(s_{t+1})$
+    - Store transition ($\phi_t, a_t, r_t, \phi_{t+1}$) in $D$
+    - Sample random minibatch of transition (($\phi_j, a_j, r_j, \phi_{j+1}$))
+    - Set $$
+    f(x) = \left\{
+	       \begin{array}{ll}
+		 0      & \mathrm{si\ } x \le 30 \\
+		 x - 30 & \mathrm{si\ } 30 \le x \le 60 \\
+		 30     & \mathrm{si\ } 60 \le x
+	       \end{array}
+	     \right.
+       $$
+    - Perform a gradient
