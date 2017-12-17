@@ -22,13 +22,13 @@ acting optimally.
 
 This Q-value function satisfies the Bellman Equation:
 $$
-Q^*(s,a) \leftarrow  \sum_{s'} P(s' | s,a) \cdot (R(s,a,s') + \gamma \underset{max}{a'} Q^* (s',a') )
+Q^*(s,a) \leftarrow  \sum_{s'} P(s' | s,a) \cdot (R(s,a,s') + \gamma \underset{a'}{max} Q^* (s',a') )
 $$
 
 For solving $Q^*$, an interative method named "Q-value iteration" is proposed.
 
 $$
-Q_{k+1}(s,a) \leftarrow  \sum_{s'} P(s' | s,a) \cdot (R(s,a,s') + \gamma \underset{max}{a'} Q_k (s',a') )
+Q_{k+1}(s,a) \leftarrow  \sum_{s'} P(s' | s,a) \cdot (R(s,a,s') + \gamma \underset{a'}{max} Q_k (s',a') )
 $$
 
 Very simple, initial estimate all to 0. Within each iteration we will replace $Q^*$ by the current estimate of $Q_k$ and compute $Q_{k+1}$.
@@ -61,12 +61,28 @@ state-action space** -> **sampling-based approximations**
 
 Given Q-value iteration as:
 $$
-Q_{k+1}(s,a) \leftarrow  \sum_{s'} P(s' | s,a) \cdot (R(s,a,s') + \gamma \underset{max}{a'} Q_k (s',a') )
+Q_{k+1}(s,a) \leftarrow  \sum_{s'} P(s' | s,a) \cdot (R(s,a,s') + \gamma \underset{a'}{max} Q_k (s',a') )
 $$
 
 This equation is pretty expensive from a computational perspective. Consider a robot, you'll need to know each one of the possible future states and compute the corresponding probability of reaching those states.
 
 Rewrite it as an expectation:
 $$
-Q_{k+1}(s,a) \leftarrow  \mathbb{E}_{s' \approx P(s'|s,a)} [R(s,a,s') + \gamma \underset{max}{a'} Q_k (s',a') ]
+Q_{k+1}(s,a) \leftarrow  \mathbb{E}_{s' \approx P(s'|s,a)} [R(s,a,s') + \gamma \underset{a'}{max} Q_k (s',a') ]
 $$
+
+This results in an algorithm called "tabular Q-learning" whose algorithm follows:
+
+```
+Start with $Q_0 (s,a)$ for all $s$, $a$.
+Get initial state $s$
+For $k=1,2, ...$ till convergence:
+  Sample action $a$, get next state $s'$
+  If $s'$ is terminal:
+    $target = R(s,a,s')$
+    Sample new initial state $s'$
+  else:
+    $target = R(s,a,s') + \gamma \underset{a'}{max} Q_k (s',a')$
+  Q_{k+1} (s,a) \leftarrow (1 - \alpha) \cdot Q_k (s,a) + \alpha[target]
+  s \leftarrow s'
+```
