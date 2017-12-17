@@ -6,6 +6,7 @@ will get benchmarked using OpenAI gym-based environments.
 ### Index
 - [Lesson 1](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-1-deep-rl-bootcamp-lecture-1-motivation--overview--exact-solution-methods)
 - [Lesson 2](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-2-sampling-based-approximations-and-function-fitting)
+- [Lesson 3](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-3-deep-q-networks)
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -122,10 +123,24 @@ When one runs DQN in a new problem it might <img src="https://rawgit.com/vmayora
     - Sample random minibatch of transition (($\phi_j, a_j, r_j, \phi_{j+1}$))
     - Set $$
     y_j = \left\{
-	       <p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/583f0b49d413507672b398a769424fd2.svg?invert_in_darkmode" align=middle width=495.4223999999999pt height=35.479455pt/></p>
+	       <p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/5c65f32daf00bd77b7f3c42b5542bdce.svg?invert_in_darkmode" align=middle width=431.88585pt height=37.78995pt/></p>
 	     \right.
        $$
     - Perform a gradient descent on $(y_j - Q(\phi_j, a_j; \theta))^2$ with respect to the network parameters $\theta$
     - Every $C$ steps reset $\hat{Q} = Q$
   - **End For**
 - **End For**
+
+Preprocessed <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/f50853d41be7d55874e952eb0d80c53e.svg?invert_in_darkmode" align=middle width=9.794565000000006pt height=22.831379999999992pt/> elements correspond to 4 frames of the game stacked together as an input to the network
+representing the state (this worked for them).
+
+Value-based methods tend to be more robust parameter-wise. Much more than policy gradient methods. People in DeepMind is running algorithms with barely no variations on the hyperparams.
+
+Double DQN, an upgrade of DQN. It exploits the fact that you have two networks: the online network and the target network. The idea is to use your online network to select the best action but then you use the target network to get the value estimate. You separate the <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/c329b295e6d71511af4f29af596de771.svg?invert_in_darkmode" align=middle width=57.50976000000001pt height=14.155350000000013pt/> from selecting the value.
+
+Dueling DQN, make two separate channels:
+- a channel that output a single channel, the value
+- and another channel that outputs one number per action, the advantage
+Summing this up (to get the output estimate of the Q-value) it will work much better in practice.
+
+You can go beyond <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/c7bd2b68b4bf6fc5be44f25166648272.svg?invert_in_darkmode" align=middle width=80.074665pt height=22.831379999999992pt/> exploration, one good way of doing exploration with NNs is to add noise to the parameters of the NNs.
