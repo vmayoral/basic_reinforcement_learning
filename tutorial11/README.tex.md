@@ -133,12 +133,14 @@ When one runs DQN in a new problem it might $10^6$ transitions to get some reaso
     - Store transition ($\phi_t, a_t, r_t, \phi_{t+1}$) in $D$
     - Sample random minibatch of transition (($\phi_j, a_j, r_j, \phi_{j+1}$))
     - Set $$
-    f(x) = \left\{
+    y_j = \left\{
 	       \begin{array}{ll}
-		 0      & \mathrm{si\ } x \le 30 \\
-		 x - 30 & \mathrm{si\ } 30 \le x \le 60 \\
-		 30     & \mathrm{si\ } 60 \le x
+      		 r_j      & \mathrm{if episode terminates at step j + 1\ }
+      		 r_j + \gamma max_{a'} \hat{Q}(\phi_{j+1},a';\hat{\theta}) & \mathrm{otherwise\ }
 	       \end{array}
 	     \right.
        $$
-    - Perform a gradient
+    - Perform a gradient descent on $(y_j - Q(\phi_j, a_j; \theta))^2$ with respect to the network parameters $\theta$
+    - Every $C$ steps reset $\hat{Q} = Q$
+  - **End For**
+- **End For**
