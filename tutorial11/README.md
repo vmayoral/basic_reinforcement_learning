@@ -21,11 +21,11 @@ acting optimally.
 
 
 This Q-value function satisfies the Bellman Equation:
-<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/aafd0d9eec7fffc4862e91ca58e5a81f.svg?invert_in_darkmode" align=middle width=390.70185pt height=36.895155pt/></p>
+<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/97e195d5485ae9fd519f1a97a1aebfb5.svg?invert_in_darkmode" align=middle width=396.96854999999994pt height=36.895155pt/></p>
 
 For solving <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/e6f426deb3194d674706c8c9ea55188c.svg?invert_in_darkmode" align=middle width=19.730700000000002pt height=22.638659999999973pt/>, an interative method named "Q-value iteration" is proposed.
 
-<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/7c7f118952a68495683f525472a135b0.svg?invert_in_darkmode" align=middle width=408.40635pt height=36.895155pt/></p>
+<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/551f01f2e1c0c044d42a3c14f3628968.svg?invert_in_darkmode" align=middle width=414.6747pt height=36.895155pt/></p>
 
 Very simple, initial estimate all to 0. Within each iteration we will replace <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/e6f426deb3194d674706c8c9ea55188c.svg?invert_in_darkmode" align=middle width=19.730700000000002pt height=22.638659999999973pt/> by the current estimate of <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/964fc254befe9910f5b411f7026ba4d7.svg?invert_in_darkmode" align=middle width=20.261505000000003pt height=22.46574pt/> and compute <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/3b6d5dd34b842494d5be0641ecad1972.svg?invert_in_darkmode" align=middle width=36.905385pt height=22.46574pt/>.
 
@@ -52,9 +52,27 @@ state-action space** -> **sampling-based approximations**
 
 
 Given Q-value iteration as:
-<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/7c7f118952a68495683f525472a135b0.svg?invert_in_darkmode" align=middle width=408.40635pt height=36.895155pt/></p>
+<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/551f01f2e1c0c044d42a3c14f3628968.svg?invert_in_darkmode" align=middle width=414.6747pt height=36.895155pt/></p>
 
 This equation is pretty expensive from a computational perspective. Consider a robot, you'll need to know each one of the possible future states and compute the corresponding probability of reaching those states.
 
 Rewrite it as an expectation:
-<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/55b27d56cb02d27fe9b724ac75c6acb9.svg?invert_in_darkmode" align=middle width=385.10339999999997pt height=23.043074999999998pt/></p>
+<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/23944b1b0bdae05cf9955ac6b950b7ac.svg?invert_in_darkmode" align=middle width=391.37174999999996pt height=23.77353pt/></p>
+
+This results in an algorithm called "tabular Q-learning" whose algorithm follows:
+
+```
+Start with <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/61037e77a80d0985cf3ec0676f94cf69.svg?invert_in_darkmode" align=middle width=56.855865pt height=24.65759999999998pt/> for all <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/6f9bad7347b91ceebebd3ad7e6f6f2d1.svg?invert_in_darkmode" align=middle width=7.705549500000004pt height=14.155350000000013pt/>, <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/44bc9d542a92714cac84e01cbbb7fd61.svg?invert_in_darkmode" align=middle width=8.689230000000004pt height=14.155350000000013pt/>.
+Get initial state <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/6f9bad7347b91ceebebd3ad7e6f6f2d1.svg?invert_in_darkmode" align=middle width=7.705549500000004pt height=14.155350000000013pt/>
+For <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/a758aaa74fe3ad6eb3e6dfb5d1dac4e7.svg?invert_in_darkmode" align=middle width=75.74193pt height=22.831379999999992pt/> till convergence:
+  Sample action <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/44bc9d542a92714cac84e01cbbb7fd61.svg?invert_in_darkmode" align=middle width=8.689230000000004pt height=14.155350000000013pt/>, get next state <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/675c2f5707a1fa7050c12adc1872ba32.svg?invert_in_darkmode" align=middle width=11.495550000000003pt height=24.716340000000006pt/>
+  If <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/675c2f5707a1fa7050c12adc1872ba32.svg?invert_in_darkmode" align=middle width=11.495550000000003pt height=24.716340000000006pt/> is terminal:
+    $target = R(s,a,s')$
+    Sample new initial state $s'$
+  else:
+    $target = R(s,a,s') + \gamma \underset{a'}{max} Q_k (s',a')$
+  Q_{k+1} (s,a) \leftarrow (1 - \alpha) \cdot Q_k (s,a) + \alpha[target]
+  s \leftarrow s'
+```
+
+During the inital phases of learning, choosing greedily isn't optimal.
