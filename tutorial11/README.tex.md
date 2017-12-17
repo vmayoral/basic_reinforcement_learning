@@ -86,3 +86,5 @@ For $k=1,2, ...$ till convergence:
   Q_{k+1} (s,a) \leftarrow (1 - \alpha) \cdot Q_k (s,a) + \alpha[target]
   s \leftarrow s'
 ```
+
+During the inital phases of learning, choosing greedily isn't optimal.
