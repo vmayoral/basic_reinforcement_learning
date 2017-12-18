@@ -5,6 +5,8 @@ from baselines import deepq
 def callback(lcl, glb):
     # stop training if reward exceeds 199
     # is_solved = lcl['t'] > 100 and sum(lcl['episode_rewards'][-101:-1]) / 100 >= 199
+
+    # never stop training
     return False
 
 # env = gym.make("CartPole-v0")
