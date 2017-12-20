@@ -1,6 +1,7 @@
 import gym
 import gym_cryptocurrencies
 from baselines import deepq
+import tensorflow as tf
 
 def callback(lcl, glb):
     # stop training if reward exceeds 199
@@ -11,10 +12,11 @@ def callback(lcl, glb):
 
 # env = gym.make("CartPole-v0")
 env = gym.make('simplified_trader-v0')
-model = deepq.models.mlp([64])
+# model = deepq.models.mlp([64])
 
-models = [[64], [64,64], [128,128], [256,256]]
+models = [[64],[128],[64,64],[128,128], [256,256], [64,64,64]]
 for m in models:
+    tf.reset_default_graph()
     act = deepq.learn(
         env,
         q_func=deepq.models.mlp(m),
