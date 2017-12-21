@@ -7,6 +7,7 @@ will get benchmarked using OpenAI gym-based environments.
 - [Lesson 1](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-1-deep-rl-bootcamp-lecture-1-motivation--overview--exact-solution-methods)
 - [Lesson 2](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-2-sampling-based-approximations-and-function-fitting)
 - [Lesson 3](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-3-deep-q-networks)
+- [Lesson 4](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4a-policy-gradients)
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -172,3 +173,9 @@ DQN, one outpuot per action. Highest score. In the continuous case, we can't hav
 Methods described will be on-policy. Dynamic programming methods (e.g. DQN) explore better and are more sample efficient.
 
 **Typically Policy optimization is *easier to get it to work*.**
+
+The derivation done shows that it's valid even when the reward function is discontinuous or even unknown.
+
+The sign of the reward seems to play a relevant role in policy gradient methods. Since the gradient:
+- increase probability of paths with positive reward R.
+- decrease probability of paths with negative reward R.
