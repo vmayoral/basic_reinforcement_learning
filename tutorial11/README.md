@@ -144,3 +144,16 @@ Dueling DQN, make two separate channels:
 Summing this up (to get the output estimate of the Q-value) it will work much better in practice.
 
 You can go beyond <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/c7bd2b68b4bf6fc5be44f25166648272.svg?invert_in_darkmode" align=middle width=80.074665pt height=22.831379999999992pt/> exploration, one good way of doing exploration with NNs is to add noise to the parameters of the NNs.
+
+### Lesson 4A: Policy Gradients
+#### Notes from lesson
+([video](https://www.youtube.com/watch?v=S_gwYj1Q-44))
+
+Learning `Q` or `V` can be really complicated. E.g. in a robotic grasp.
+- Q implies that continuous or high state actions spaces are tricky. Reason:  argmax computation is tricky. DQN has an ouput per each possible action but how can we deal with it if we have a continuous set of actions?.
+
+DQN, one outpuot per action. Highest score. In the continuous case, we can't have an output per action. So we then need to take the action as an input. *Input* is action and state, *output* is the value of that action/state combination. We need to solve a difficult optimization problem.
+
+Methods described will be on-policy. Dynamic programming methods (e.g. DQN) explore better and are more sample efficient.
+
+**Typically Policy optimization is *easier to get it to work*.**
