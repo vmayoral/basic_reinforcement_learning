@@ -160,4 +160,15 @@ Summing this up (to get the output estimate of the Q-value) it will work much be
 
 You can go beyond $\epsilon-Greedy$ exploration, one good way of doing exploration with NNs is to add noise to the parameters of the NNs.
 
-Let's now get 
+### Lesson 4A: Policy Gradients
+#### Notes from lesson
+([video](https://www.youtube.com/watch?v=S_gwYj1Q-44))
+
+Learning `Q` or `V` can be really complicated. E.g. in a robotic grasp.
+- Q implies that continuous or high state actions spaces are tricky. Reason:  argmax computation is tricky. DQN has an ouput per each possible action but how can we deal with it if we have a continuous set of actions?.
+
+DQN, one outpuot per action. Highest score. In the continuous case, we can't have an output per action. So we then need to take the action as an input. *Input* is action and state, *output* is the value of that action/state combination. We need to solve a difficult optimization problem.
+
+Methods described will be on-policy. Dynamic programming methods (e.g. DQN) explore better and are more sample efficient.
+
+**Typically Policy optimization is *easier to get it to work*.**
