@@ -183,7 +183,7 @@ The sign of the reward seems to play a relevant role in policy gradient methods.
 A baseline `b` is introduced to improve the formulation. Such baseline doesn't affect
 while it doesn't depend on the action.
 
-##### Algorithm: Vanilla Policy Gradient
+##### Algorithm: Vanilla Policy Gradient [[William, 1992](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)]
 - Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
 - **for** $iteration=1,2,...$ **do**
     - Collect a set of trajectories by executing the current policy
