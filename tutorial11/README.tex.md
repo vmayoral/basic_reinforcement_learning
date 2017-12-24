@@ -194,3 +194,9 @@ while it doesn't depend on the action.
     - Update the policy, using a policy gradient estimate $\hat{g}$,
       which is a sum of terms $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
 **end for**
+
+Among the demonstrators shown, robot learns how to run in about 2000 episodes which according to them, could take 2 weeks of real training.
+
+Simulation to real robot explained at https://youtu.be/S_gwYj1Q-44?t=50m20s. Simulating and transferring it into the real robot is an active research line. One interesting approach is to run experiments in a number of different randomized scenarios under the same policy (e.g.: **using different physics engines**).
+
+Question asked about how to make a robot do specific things once it has learned basic behaviors (e.g.: walk). Answer was that problem had to be set up slightly differently. Instead of inputing to the NNs only states you would also input the direction of the goal. Paper "Hindsight Experience Replay" describes this method.
