@@ -179,3 +179,19 @@ The derivation done shows that it's valid even when the reward function is disco
 The sign of the reward seems to play a relevant role in policy gradient methods. Since the gradient:
 - increase probability of paths with positive reward R.
 - decrease probability of paths with negative reward R.
+
+A baseline `b` is introduced to improve the formulation. Such baseline doesn't affect
+while it doesn't depend on the action.
+
+##### Algorithm: Vanilla Policy Gradient
+Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
+**for** $iteration=1,2,...$ **do**
+    Collect a set of trajectories by executing the current policy
+    At each timestep in each trajectory, compute
+      the return $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$, and
+      the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
+    Re-fit the baseline by minimizing $|| b(s_t) - R_t||^2$,
+      summed over all trajectories and timesteps.
+    Update the policy, using a policy gradient estimate $\hat{g}$,
+      which is a sum of terms $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
+**end for**
