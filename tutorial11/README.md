@@ -168,15 +168,14 @@ The sign of the reward seems to play a relevant role in policy gradient methods.
 A baseline `b` is introduced to improve the formulation. Such baseline doesn't affect
 while it doesn't depend on the action.
 
-##### Algorithm: Vanilla Policy Gradient
-Initialize policy (e.g. NNs) parameter <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.173588500000005pt height=22.831379999999992pt/> and baseline <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg?invert_in_darkmode" align=middle width=7.054855500000005pt height=22.831379999999992pt/>
-**for** <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/d0ab356ea9a56a11794552df3bdc04a6.svg?invert_in_darkmode" align=middle width=131.91634499999998pt height=21.683310000000006pt/> **do**
-    Collect a set of trajectories by executing the current policy
-    At each timestep in each trajectory, compute
+##### Algorithm: Vanilla Policy Gradient [[William, 1992](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)]
+- Initialize policy (e.g. NNs) parameter <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.173588500000005pt height=22.831379999999992pt/> and baseline <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg?invert_in_darkmode" align=middle width=7.054855500000005pt height=22.831379999999992pt/>
+- **for** <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/d0ab356ea9a56a11794552df3bdc04a6.svg?invert_in_darkmode" align=middle width=131.91634499999998pt height=21.683310000000006pt/> **do**
+    - Collect a set of trajectories by executing the current policy
+    - At each timestep in each trajectory, compute
       the return $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$, and
       the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
-    Re-fit the baseline by minimizing $|| b(s_t) - R_t||^2$,
-      summed over all trajectories and timesteps.
-    Update the policy, using a policy gradient estimate $\hat{g}$,
+    - Re-fit the baseline (recomputing the value function) by minimizing $|| b(s_t) - R_t||^2$, summed over all trajectories and timesteps.
+    - Update the policy, using a policy gradient estimate $\hat{g}$,
       which is a sum of terms $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
 **end for**
