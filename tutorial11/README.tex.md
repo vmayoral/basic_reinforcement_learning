@@ -184,14 +184,13 @@ A baseline `b` is introduced to improve the formulation. Such baseline doesn't a
 while it doesn't depend on the action.
 
 ##### Algorithm: Vanilla Policy Gradient
-Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
-**for** $iteration=1,2,...$ **do**
-    Collect a set of trajectories by executing the current policy
-    At each timestep in each trajectory, compute
+- Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
+- **for** $iteration=1,2,...$ **do**
+    - Collect a set of trajectories by executing the current policy
+    - At each timestep in each trajectory, compute
       the return $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$, and
       the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
-    Re-fit the baseline by minimizing $|| b(s_t) - R_t||^2$,
-      summed over all trajectories and timesteps.
-    Update the policy, using a policy gradient estimate $\hat{g}$,
+    - Re-fit the baseline (recomputing the value function) by minimizing $|| b(s_t) - R_t||^2$, summed over all trajectories and timesteps.
+    - Update the policy, using a policy gradient estimate $\hat{g}$,
       which is a sum of terms $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
 **end for**
