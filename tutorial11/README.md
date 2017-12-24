@@ -7,6 +7,7 @@ will get benchmarked using OpenAI gym-based environments.
 - [Lesson 1](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-1-deep-rl-bootcamp-lecture-1-motivation--overview--exact-solution-methods)
 - [Lesson 2](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-2-sampling-based-approximations-and-function-fitting)
 - [Lesson 3](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-3-deep-q-networks)
+- [Lesson 4](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4a-policy-gradients)
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -157,3 +158,25 @@ DQN, one outpuot per action. Highest score. In the continuous case, we can't hav
 Methods described will be on-policy. Dynamic programming methods (e.g. DQN) explore better and are more sample efficient.
 
 **Typically Policy optimization is *easier to get it to work*.**
+
+The derivation done shows that it's valid even when the reward function is discontinuous or even unknown.
+
+The sign of the reward seems to play a relevant role in policy gradient methods. Since the gradient:
+- increase probability of paths with positive reward R.
+- decrease probability of paths with negative reward R.
+
+A baseline `b` is introduced to improve the formulation. Such baseline doesn't affect
+while it doesn't depend on the action.
+
+##### Algorithm: Vanilla Policy Gradient
+Initialize policy (e.g. NNs) parameter <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.173588500000005pt height=22.831379999999992pt/> and baseline <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg?invert_in_darkmode" align=middle width=7.054855500000005pt height=22.831379999999992pt/>
+**for** <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/d0ab356ea9a56a11794552df3bdc04a6.svg?invert_in_darkmode" align=middle width=131.91634499999998pt height=21.683310000000006pt/> **do**
+    Collect a set of trajectories by executing the current policy
+    At each timestep in each trajectory, compute
+      the return $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$, and
+      the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
+    Re-fit the baseline by minimizing $|| b(s_t) - R_t||^2$,
+      summed over all trajectories and timesteps.
+    Update the policy, using a policy gradient estimate $\hat{g}$,
+      which is a sum of terms $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
+**end for**
