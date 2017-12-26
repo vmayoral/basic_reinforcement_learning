@@ -186,7 +186,7 @@ Simulation to real robot explained at https://youtu.be/S_gwYj1Q-44?t=50m20s. Sim
 
 Question asked about how to make a robot do specific things once it has learned basic behaviors (e.g.: walk). Answer was that problem had to be set up slightly differently. Instead of inputing to the NNs only states you would also input the direction of the goal. Paper "Hindsight Experience Replay" describes this method.
 
-### Lesson 5: Policy Gradients Revisited
+### Lesson 4B: Policy Gradients Revisited
 #### Notes from lesson
 ([video](https://www.youtube.com/watch?v=tqrcjHuNdmQ))
 
@@ -204,3 +204,13 @@ Accounts for the total amount of parameters at https://youtu.be/tqrcjHuNdmQ?t=3m
 In total: <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/2029949e9314de1b33a7733ef73f8416.svg?invert_in_darkmode" align=middle width=393.99475499999994pt height=24.65759999999998pt/>.
 
 There's no way to learn from static frames so what they do is concatenate frames together or use the difference.
+
+Interesting way of putting Supervised Learning and Reinforcement Learning:
+
+| Supervised Learning | Reinforcement Learning |
+| --------------------|------------------------|
+| We try to maximize: <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/3046efeaa042703a7db1fe0f2f07cef3.svg?invert_in_darkmode" align=middle width=101.21314499999998pt height=24.65792999999999pt/> for images <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/9fc20fb1d3825674c6a279cb0d5ca636.svg?invert_in_darkmode" align=middle width=14.045955000000003pt height=14.155350000000013pt/> and labels <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/2b442e3e088d1b744730822d18e7aa21.svg?invert_in_darkmode" align=middle width=12.710445000000004pt height=14.155350000000013pt/> |
+we have no lables so we sample <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/76ffd083102670368cf1acdadaa9598a.svg?invert_in_darkmode" align=middle width=83.70251999999999pt height=24.65759999999998pt/> |
+| | once we collect a batch of rollouts, we maximize: <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/341bce2e1610551ae507502c9b8ee94f.svg?invert_in_darkmode" align=middle width=130.886745pt height=24.65792999999999pt/> |
+
+where <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4ebf880807deff5796460f39aea46f80.svg?invert_in_darkmode" align=middle width=16.979820000000004pt height=22.46574pt/> is called the advantage (-1,+1) depending on the result.
