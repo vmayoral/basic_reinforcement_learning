@@ -7,7 +7,8 @@ will get benchmarked using OpenAI gym-based environments.
 - [Lesson 1](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-1-deep-rl-bootcamp-lecture-1-motivation--overview--exact-solution-methods)
 - [Lesson 2](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-2-sampling-based-approximations-and-function-fitting)
 - [Lesson 3](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-3-deep-q-networks)
-- [Lesson 4](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4a-policy-gradients)
+- [Lesson 4A](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4a-policy-gradients)
+- [Lesson 4B](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4b-policy-gradients-revisited)
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -166,8 +167,9 @@ The sign of the reward seems to play a relevant role in policy gradient methods.
 - decrease probability of paths with negative reward R.
 
 A baseline `b` is introduced to improve the formulation. Such baseline doesn't affect
-while it doesn't depend on the action.
+while it doesn't depend on the action. The value function <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4b196f4ff6569c417dbeb3d2fa4a6f4c.svg?invert_in_darkmode" align=middle width=17.689155000000003pt height=22.46574pt/> tells you how much reward you'll get.
 
+Explanation at https://youtu.be/S_gwYj1Q-44?t=36m:
 ##### Algorithm: Vanilla Policy Gradient [[William, 1992](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)]
 - Initialize policy (e.g. NNs) parameter <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.173588500000005pt height=22.831379999999992pt/> and baseline <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg?invert_in_darkmode" align=middle width=7.054855500000005pt height=22.831379999999992pt/>
 - **for** <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/d0ab356ea9a56a11794552df3bdc04a6.svg?invert_in_darkmode" align=middle width=131.91634499999998pt height=21.683310000000006pt/> **do**
@@ -213,3 +215,7 @@ Interesting way of putting Supervised Learning and Reinforcement Learning:
 | | once we collect a batch of rollouts, we maximize: <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/341bce2e1610551ae507502c9b8ee94f.svg?invert_in_darkmode" align=middle width=130.886745pt height=24.65792999999999pt/> |
 
 where <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/4ebf880807deff5796460f39aea46f80.svg?invert_in_darkmode" align=middle width=16.979820000000004pt height=22.46574pt/> is called the advantage (-1,+1) depending on the result.
+
+Discounting is heuristic to do a modulation of the blame for a bad (or good) reward. Typically represented as <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/11c596de17c342edeed29f489aa4b274.svg?invert_in_darkmode" align=middle width=9.423975000000004pt height=14.155350000000013pt/>.
+
+Simple implementation of a policy gradient using numpy. Code https://gist.github.com/karpathy/a4166c7fe253700972fcbc77e4ea32c5 explained nicely starting at https://youtu.be/tqrcjHuNdmQ?t=23m19s. (good exercise would be to implement it using Tensorflow).
