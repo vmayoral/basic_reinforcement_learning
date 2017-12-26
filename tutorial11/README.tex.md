@@ -201,7 +201,7 @@ Simulation to real robot explained at https://youtu.be/S_gwYj1Q-44?t=50m20s. Sim
 
 Question asked about how to make a robot do specific things once it has learned basic behaviors (e.g.: walk). Answer was that problem had to be set up slightly differently. Instead of inputing to the NNs only states you would also input the direction of the goal. Paper "Hindsight Experience Replay" describes this method.
 
-### Lesson 5: Policy Gradients Revisited
+### Lesson 4B: Policy Gradients Revisited
 #### Notes from lesson
 ([video](https://www.youtube.com/watch?v=tqrcjHuNdmQ))
 
