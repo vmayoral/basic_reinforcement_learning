@@ -224,8 +224,7 @@ Interesting way of putting Supervised Learning and Reinforcement Learning:
 
 | Supervised Learning | Reinforcement Learning |
 | --------------------|------------------------|
-| We try to maximize: $\sum_i log p(y_i| x_i)$ for images $x_i$ and labels $y_i$ |
-we have no lables so we sample $y_i \approx p( ? | x_i)$ |
+| We try to maximize: $\sum_i log p(y_i| x_i)$ for images $x_i$ and labels $y_i$ | we have no lables so we sample $y_i \approx p( ? | x_i)$ |
 | | once we collect a batch of rollouts, we maximize: $\sum_i A_i \cdot log p(y_i | x_i)$ |
 
 where $A_i$ is called the advantage (-1,+1) depending on the result.
