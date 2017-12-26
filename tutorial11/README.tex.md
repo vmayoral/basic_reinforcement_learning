@@ -182,8 +182,9 @@ The sign of the reward seems to play a relevant role in policy gradient methods.
 - decrease probability of paths with negative reward R.
 
 A baseline `b` is introduced to improve the formulation. Such baseline doesn't affect
-while it doesn't depend on the action.
+while it doesn't depend on the action. The value function $V_\pi$ tells you how much reward you'll get.
 
+Explanation at https://youtu.be/S_gwYj1Q-44?t=36m:
 ##### Algorithm: Vanilla Policy Gradient [[William, 1992](http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf)]
 - Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
 - **for** $iteration=1,2,...$ **do**
@@ -229,3 +230,7 @@ Interesting way of putting Supervised Learning and Reinforcement Learning:
 | | once we collect a batch of rollouts, we maximize: $\sum_i A_i \cdot log p(y_i | x_i)$ |
 
 where $A_i$ is called the advantage (-1,+1) depending on the result.
+
+Discounting is heuristic to do a modulation of the blame for a bad (or good) reward. Typically represented as $\gamma$.
+
+Simple implementation of a policy gradient using numpy. Code https://gist.github.com/karpathy/a4166c7fe253700972fcbc77e4ea32c5 explained nicely starting at https://youtu.be/tqrcjHuNdmQ?t=23m19s. (good exercise would be to implement it using Tensorflow).
