@@ -200,3 +200,22 @@ Among the demonstrators shown, robot learns how to run in about 2000 episodes wh
 Simulation to real robot explained at https://youtu.be/S_gwYj1Q-44?t=50m20s. Simulating and transferring it into the real robot is an active research line. One interesting approach is to run experiments in a number of different randomized scenarios under the same policy (e.g.: **using different physics engines**).
 
 Question asked about how to make a robot do specific things once it has learned basic behaviors (e.g.: walk). Answer was that problem had to be set up slightly differently. Instead of inputing to the NNs only states you would also input the direction of the goal. Paper "Hindsight Experience Replay" describes this method.
+
+### Lesson 5: Policy Gradients Revisited
+#### Notes from lesson
+([video](https://www.youtube.com/watch?v=tqrcjHuNdmQ))
+
+Accounts for the total amount of parameters at https://youtu.be/tqrcjHuNdmQ?t=3m34s as follows:
+
+```
+# 80x80 pixel images
+#input layer to (first and only) hidden layer
+#  200  neurons in the hidden layer
+80*80*200 (weights) + 200 (biases)
+# hidden to output layer
+200*1 (weights) + 1 (biases)
+```
+
+In total: $[(80 \cdot 80)\cdot 200 + 200] + (200)\cdot 1 + 1 = 1282201 \approx 1.3 M $.
+
+There's no way to learn from static frames so what they do is concatenate frames together or use the difference.
