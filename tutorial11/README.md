@@ -234,10 +234,35 @@ How to use all data available and compute the best policy:
 - In Q-Learning we're optimizing the wrong objective. In Q-Learning you're trying to minimize some kind of Bellman error when what you care about is that your policy performs well.
 - PG optimized the thing we care about but the downside is that they are not good at using all of the data we have available.
 
-##### Algorithm: Trust Region Policy Optimization
+##### Algorithm: Trust Region Policy Optimization (TRPO)
 For <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/afffe65a4a177f6f6cc5f27bb47d547d.svg?invert_in_darkmode" align=middle width=141.78318000000002pt height=21.683310000000006pt/> do
 - Run policy for <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/2f118ee06d05f3c2d98361d9c30e38ce.svg?invert_in_darkmode" align=middle width=11.889405000000002pt height=22.46574pt/> timesteps or <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/f9c4988898e7f532b9f826a75014ed3c.svg?invert_in_darkmode" align=middle width=14.999985000000004pt height=22.46574pt/> trajectories
 - Estimate advantage function at all timesteps:
 <p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/a9edf5cff46266297cf927e217389deb.svg?invert_in_darkmode" align=middle width=227.49374999999998pt height=47.60745pt/></p>
-   subject to $KL_{\pi_\theta_old}$ (\pi_theta) \le \delta
+   subject to $KL_{\pi_\theta_{old}}$ (\pi_theta) \le \delta$
 End For
+
+It appears that we can solve this constrained optimization problem efficiently by using conjugate gradient. This method is closely related to natural policy gradients, natural actor-critic and others.
+
+Really theoretical. Summary of the theoretical methods at https://youtu.be/xvRrgxcpaHY?t=27m16s.
+
+Limitations of TRPO:
+- Hard to use with architectures with multiple outputs, e.g. like if the policy is outputing action probabilities and the value function then it's not clear what you should use instead of the KL divergence.
+- Empirically it performs poorly on tasks requiring deep CNNs and RNNs
+- Conjugate Gradient makes the implementation less flexible (a little bit more complicated)
+
+Two alternatives to TRPO:
+- KFAC: do blockwise approximation to Fisher Information Matrix (FIM)
+- ACKTR: KFAC idea into A2C.
+- PPO: use penalty instead of the constraint.
+
+##### Algorithm: Proximal Policy Optimization (PPO)
+For <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/d0ab356ea9a56a11794552df3bdc04a6.svg?invert_in_darkmode" align=middle width=131.91634499999998pt height=21.683310000000006pt/> do
+- Run policy for <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/2f118ee06d05f3c2d98361d9c30e38ce.svg?invert_in_darkmode" align=middle width=11.889405000000002pt height=22.46574pt/> timesteps or <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/f9c4988898e7f532b9f826a75014ed3c.svg?invert_in_darkmode" align=middle width=14.999985000000004pt height=22.46574pt/> trajectories
+- Estimate advantage function at all timesteps
+- DO SGD on <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/5ce74f84a7c356ca02480a923de2b1fa.svg?invert_in_darkmode" align=middle width=69.080055pt height=27.656969999999987pt/> objective for some number of epochs
+End For
+
+It's:
+- Much better for continuous control than TRPO, much better than atari (robotics).
+- Compatible with RNNs and multiple output networks.
