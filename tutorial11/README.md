@@ -235,11 +235,9 @@ How to use all data available and compute the best policy:
 - PG optimized the thing we care about but the downside is that they are not good at using all of the data we have available.
 
 ##### Algorithm: Trust Region Policy Optimization
-- For <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/afffe65a4a177f6f6cc5f27bb47d547d.svg?invert_in_darkmode" align=middle width=141.78318000000002pt height=21.683310000000006pt/> do
-   - Run policy for $T$ timesteps or $N$ trajectories
-   - Estimate advantage function at all timesteps:
-   $$
-   \underset{\theta}{maximize} \sum_{n=1}^{N} \frac{\pi_\theta (a_n | s_n)}{\pi_{\theta_old}(a_n | s_n)} \hat(A)_n
-   $$
+For <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/afffe65a4a177f6f6cc5f27bb47d547d.svg?invert_in_darkmode" align=middle width=141.78318000000002pt height=21.683310000000006pt/> do
+- Run policy for <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/2f118ee06d05f3c2d98361d9c30e38ce.svg?invert_in_darkmode" align=middle width=11.889405000000002pt height=22.46574pt/> timesteps or <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/f9c4988898e7f532b9f826a75014ed3c.svg?invert_in_darkmode" align=middle width=14.999985000000004pt height=22.46574pt/> trajectories
+- Estimate advantage function at all timesteps:
+<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/a9edf5cff46266297cf927e217389deb.svg?invert_in_darkmode" align=middle width=227.49374999999998pt height=47.60745pt/></p>
    subject to $KL_{\pi_\theta_old}$ (\pi_theta) \le \delta
-- End For
+End For
