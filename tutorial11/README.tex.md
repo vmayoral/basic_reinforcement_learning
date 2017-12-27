@@ -250,11 +250,11 @@ How to use all data available and compute the best policy:
 - PG optimized the thing we care about but the downside is that they are not good at using all of the data we have available.
 
 ##### Algorithm: Trust Region Policy Optimization
-- For $interation=1,2,...$ do
-   - Run policy for $T$ timesteps or $N$ trajectories
-   - Estimate advantage function at all timesteps:
-   $$
+For $interation=1,2,...$ do
+- Run policy for $T$ timesteps or $N$ trajectories
+- Estimate advantage function at all timesteps:
+$$
    \underset{\theta}{maximize} \sum_{n=1}^{N} \frac{\pi_\theta (a_n | s_n)}{\pi_{\theta_old}(a_n | s_n)} \hat(A)_n
-   $$
+$$
    subject to $KL_{\pi_\theta_old}$ (\pi_theta) \le \delta
-- End For
+End For
