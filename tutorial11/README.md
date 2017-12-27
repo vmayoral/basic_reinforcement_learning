@@ -219,3 +219,27 @@ where <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master/
 Discounting is heuristic to do a modulation of the blame for a bad (or good) reward. Typically represented as <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/11c596de17c342edeed29f489aa4b274.svg?invert_in_darkmode" align=middle width=9.423975000000004pt height=14.155350000000013pt/>.
 
 Simple implementation of a policy gradient using numpy. Code https://gist.github.com/karpathy/a4166c7fe253700972fcbc77e4ea32c5 explained nicely starting at https://youtu.be/tqrcjHuNdmQ?t=23m19s. (good exercise would be to implement it using Tensorflow).
+
+### Lesson 5: Natural Policy Gradients, TRPO, PPO
+#### Notes from lesson
+([video](https://www.youtube.com/watch?v=xvRrgxcpaHY))
+
+Lesson about more advanced optimization methods to be used with Policy Gradients (PG).
+
+Two limitations of "Vanilla Policy Gradient methods":
+- hard to choose stepsizes (observation and reward distributions may change)
+- sample efficiency (slow learning)
+
+How to use all data available and compute the best policy:
+- In Q-Learning we're optimizing the wrong objective. In Q-Learning you're trying to minimize some kind of Bellman error when what you care about is that your policy performs well.
+- PG optimized the thing we care about but the downside is that they are not good at using all of the data we have available.
+
+##### Algorithm: Trust Region Policy Optimization
+- For <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial11/tex/afffe65a4a177f6f6cc5f27bb47d547d.svg?invert_in_darkmode" align=middle width=141.78318000000002pt height=21.683310000000006pt/> do
+   - Run policy for $T$ timesteps or $N$ trajectories
+   - Estimate advantage function at all timesteps:
+   $$
+   \underset{\theta}{maximize} \sum_{n=1}^{N} \frac{\pi_\theta (a_n | s_n)}{\pi_{\theta_old}(a_n | s_n)} \hat(A)_n
+   $$
+   subject to $KL_{\pi_\theta_old}$ (\pi_theta) \le \delta
+- End For
