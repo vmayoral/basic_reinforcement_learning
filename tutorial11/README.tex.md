@@ -249,12 +249,37 @@ How to use all data available and compute the best policy:
 - In Q-Learning we're optimizing the wrong objective. In Q-Learning you're trying to minimize some kind of Bellman error when what you care about is that your policy performs well.
 - PG optimized the thing we care about but the downside is that they are not good at using all of the data we have available.
 
-##### Algorithm: Trust Region Policy Optimization
+##### Algorithm: Trust Region Policy Optimization (TRPO)
 For $interation=1,2,...$ do
 - Run policy for $T$ timesteps or $N$ trajectories
 - Estimate advantage function at all timesteps:
 $$
    \underset{\theta}{maximize} \sum_{n=1}^{N} \frac{\pi_\theta (a_n | s_n)}{\pi_{\theta_old}(a_n | s_n)} \hat(A)_n
 $$
-   subject to $KL_{\pi_\theta_old}$ (\pi_theta) \le \delta
+   subject to $KL_{\pi_\theta_{old}}$ (\pi_theta) \le \delta$
 End For
+
+It appears that we can solve this constrained optimization problem efficiently by using conjugate gradient. This method is closely related to natural policy gradients, natural actor-critic and others.
+
+Really theoretical. Summary of the theoretical methods at https://youtu.be/xvRrgxcpaHY?t=27m16s.
+
+Limitations of TRPO:
+- Hard to use with architectures with multiple outputs, e.g. like if the policy is outputing action probabilities and the value function then it's not clear what you should use instead of the KL divergence.
+- Empirically it performs poorly on tasks requiring deep CNNs and RNNs
+- Conjugate Gradient makes the implementation less flexible (a little bit more complicated)
+
+Two alternatives to TRPO:
+- KFAC: do blockwise approximation to Fisher Information Matrix (FIM)
+- ACKTR: KFAC idea into A2C.
+- PPO: use penalty instead of the constraint.
+
+##### Algorithm: Proximal Policy Optimization (PPO)
+For $iteration=1,2,...$ do
+- Run policy for $T$ timesteps or $N$ trajectories
+- Estimate advantage function at all timesteps
+- DO SGD on $L^{CLIP}(\theta)$ objective for some number of epochs
+End For
+
+It's:
+- Much better for continuous control than TRPO, much better than atari (robotics).
+- Compatible with RNNs and multiple output networks.
