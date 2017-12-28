@@ -10,6 +10,7 @@ will get benchmarked using OpenAI gym-based environments.
 - [Lesson 4A](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4a-policy-gradients)
 - [Lesson 4B](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4b-policy-gradients-revisited)
 - [Lesson 5](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-5-natural-policy-gradients-trpo-ppo)
+- [Lesson 6](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-6-nuts-and-bolts-of-deep-rl-experimentation)
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -288,6 +289,7 @@ It's:
 ### Lesson 6: Nuts and Bolts of Deep RL Experimentation
 Talk about tips on how to make decision on RL.
 
+### Aproaching new problems
 Quick tips for new algorithms:
 - Small environment
 - Visualize everything
@@ -311,3 +313,62 @@ Run your baselines:
   - Cross-entropy method ([Wikipedia](https://en.wikipedia.org/wiki/Cross-entropy_method), [Gist implementation](https://gist.github.com/andrewliao11/d52125b52f76a4af73433e1cf8405a8f))
   - Well-tuned policy gradient method (e.g.: PPO)
   - Well-tuned Q-learning + SARSA method
+
+
+Usually things work better when you have more samples (per batch). Bigger batches are recommended.
+
+### Ongoing development and tuning
+Explore sensitivity to each parameter. If it's too sensitive, got lucky but not robust.
+
+Have a system for continually benchmarking your code. Run a battery of benchmarks occasionally. CI? Automate your experiments.
+
+### General tuning strategies for RL
+
+Standardizing data:
+- Rescale observations with: $x' = clip((x- \mu)/\sigma, -10,10)$
+- Rescale rewards but don't shift the mean as that affects agents will to live
+- Standardize prediction targets *is more complicated*.
+
+Generally important parameters:
+- Watch out with $\gamma$, it can ignore rewards delayed by x timesteps
+- Action frequency, make sure it's human solvable.
+
+General RL diagnostics:
+- Look at episode returns min/max and stdev along with mean.
+- Look at episode lengths (*sometimes more informative that the reward*), sometimes provides additional information (e.g.: solving problem faster, losing game slower)
+
+### Policy gradient strategies
+
+Entropy as a diagnostic:
+- If your entropy is going down really fast it means the policy is becoming deterministic and it's not going to explore anything. Be careful also if it's not going down (totally random always). **How do you measure entropy?** For most policies you can compute the entropy analytically. For continuous gaussian policies you can compute the differencial entropies.
+- Use entropy bonus
+
+Baseline explained variance:
+$$
+explained_variance = \frac{1 - Var[empirical_return - predicted_value]}{Var[empirical_return]}
+$$
+
+Policy initialization is relevant. Specially in supervised learning. Zero or tiny final layer, to maximize entropy.
+
+### Q-Learning strategies
+- optimize memory usage (replay buffer)
+- learning rate,
+- schedules are often useful ($\epsilon-Greedy$)
+- converges slowly and has a **misterious warmup** period (DQN)
+
+### Miscellaneous advice
+- Read older textbooks and theses
+- Don't get too stucked on problems
+- DQN performs pretty poorly for continuous control
+- Techniques from supervised learning don't necessarily work in RL (e.g.: batch norm, dropout, big networks)
+
+### Questions
+- **How long do you wait until you decide if the algorithm works or not?** No straight answer. For PG, it typically learns fast.
+- **Do you use unit tests?** Only for particular mathematical things.
+- **Do you have guidelines on how to much the algorithm to a particular task?** People have found that PG methods are probably the way to go if you don't care about sample complexity. PG is probably the safest way to go. DQN is a bit indirect of what's doing. If you care about sample complexity or need off-policy data, then DQN. Sample complexity is relevant if your simulator is expensive.
+People have found that DQN works well with images as inputs while PG methods work better in continuous control tasks but it might be a historical accident.
+- **Recommendations on textbooks**:
+   - [Optimal control and dynamic programming](http://www.athenasc.com/dpbook.html)
+   - ... (didn't catch them)
+- **Comments on evolution strategies**: Lots of PG methods, some complicated. Evolution strategies (simple algorithm) as opposed to PG. OpenAI (and others) claimed EA work as well as PG. His opinion is that the sample complexity is worse by a constant factor (1,3, 100?). This might change between problems. EA might be a good alternative for problems with time dependencies.
+- **Framework for hyperparameter optimization**: He uses uniform sampling. Works really well.
