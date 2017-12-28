@@ -9,6 +9,7 @@ will get benchmarked using OpenAI gym-based environments.
 - [Lesson 3](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-3-deep-q-networks)
 - [Lesson 4A](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4a-policy-gradients)
 - [Lesson 4B](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4b-policy-gradients-revisited)
+- [Lesson 5](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-5-natural-policy-gradients-trpo-ppo)
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -266,3 +267,30 @@ End For
 It's:
 - Much better for continuous control than TRPO, much better than atari (robotics).
 - Compatible with RNNs and multiple output networks.
+
+### Lesson 6: Nuts and Bolts of Deep RL Experimentation
+Talk about tips on how to make decision on RL.
+
+Quick tips for new algorithms:
+- Small environment
+- Visualize everything
+- If working with Hierarchical RL, we should have a way to identify what's the algorithm doing.
+- Don't over optimize things when working with toy problems
+- **Intuition**: Find out your own set of problems that you know very well and that allow you
+to determine if an algorithm is learning or not.
+
+Quick tips for a new task:
+- Make things easier
+- **Provide good input features**. E.g.: start "understanding the problem by" switching to "x-y" coordinates rather than start with full RGB images.
+- **shape the reward function**: come up with a reward function that gives you fast feedback of whether you're doing the right thing or not.
+
+POMDP design tips:
+- Visualize random policies when training, if it does "sort-of-ok" work, then RL is likely the right thing.
+- Make sure everything (obs and rewards mainly) is reasonable scaled. Everything with mean 0 and std deviation of 1.
+
+Run your baselines:
+- default parameters are useless
+- Recommendation:
+  - Cross-entropy method ([Wikipedia](https://en.wikipedia.org/wiki/Cross-entropy_method), [Gist implementation](https://gist.github.com/andrewliao11/d52125b52f76a4af73433e1cf8405a8f))
+  - Well-tuned policy gradient method (e.g.: PPO)
+  - Well-tuned Q-learning + SARSA method
