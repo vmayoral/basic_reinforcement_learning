@@ -17,9 +17,10 @@ sess = U.make_session(num_cpu=1)
 sess.__enter__()
 
 # Load the previous trained graph
-tf.train.Saver().restore(sess, '/tmp/experiments/continuous/PPO/models/TimeLimit_afterIter_16.model')
+tf.train.Saver().restore(sess, '/tmp/experiments/continuous/PPO/models/TimeLimit_afterIter_80.model')
 # tf.train.Saver().restore(sess, '/tmp/experiments/continuous/PPO/models/TimeLimit_afterIter_24.model')
 
+env.render()
 while True:
     obs, done = env.reset(), False
     episode_rew = 0

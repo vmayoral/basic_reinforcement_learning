@@ -12,8 +12,9 @@ with g.as_default():
             hid_size=64, num_hid_layers=2)
     pposgd_simple.learn(env,
             policy_fn,
-            max_timesteps=50000,
-            timesteps_per_actorbatch=2048,
+            max_timesteps=10000,
+            timesteps_per_actorbatch=2048, # timesteps per actor per update
+            # timesteps_per_actorbatch=128, # timesteps per actor per update
             clip_param=0.2,
             entcoeff=0.0,
             optim_epochs=10,
@@ -22,8 +23,8 @@ with g.as_default():
             gamma=0.99,
             lam=0.95,
             schedule='linear',
-            save_model_with_prefix=str(env.__class__.__name__),
-            outdir="/tmp/experiments/continuous/PPO/"
+            save_model_with_prefix=str(env.__class__.__name__), # typically, the env.
+            outdir="/tmp/experiments/continuous/PPO/" # path for the log files (tensorboard) and models
         )
 
     # act.save("models/mountaincar_continuous_model_PPO_"+str(m)+".pkl")
