@@ -56,6 +56,7 @@ $$
 
 
 Pseudocode:
+```
 1. Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
 2. For iteration=1,2,... do
     2.1 Collect a set of trajectories by executing the current policy
@@ -68,7 +69,7 @@ Pseudocode:
         which is a sum of terms
             $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
 3. **end for**
-
+```
 
 
 In this section, we will study different approaches and discuss their properties.
