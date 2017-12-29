@@ -36,6 +36,7 @@ from standard differential calculus <img src="https://rawgit.com/vmayoral/basic_
 
 
 Pseudocode:
+```
 1. Initialize policy (e.g. NNs) parameter <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.173588500000005pt height=22.831379999999992pt/> and baseline <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg?invert_in_darkmode" align=middle width=7.054855500000005pt height=22.831379999999992pt/>
 2. For iteration=1,2,... do
     2.1 Collect a set of trajectories by executing the current policy
@@ -48,7 +49,7 @@ Pseudocode:
         which is a sum of terms
             $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
 3. **end for**
-
+```
 
 
 In this section, we will study different approaches and discuss their properties.
