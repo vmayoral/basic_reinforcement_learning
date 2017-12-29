@@ -24,9 +24,9 @@ Vanilla Policy Gradient (PG)
     1. Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
     2. For iteration=1,2,... do
         2.1 Collect a set of trajectories by executing the current policy
-        2.2 At each timestep in each trajectory, compute the return
-            $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$, and
-            the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
+        2.2 At each timestep in each trajectory, compute
+            2.2.1 the return $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$ and
+            2.2.2 the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
         2.3 Re-fit the baseline (recomputing the value function) by minimizing
             $|| b(s_t) - R_t||^2$, summed over all trajectories and timesteps.
         2.4 Update the policy, using a policy gradient estimate $\hat{g}$,
@@ -93,11 +93,11 @@ def value_gradient():
     state
         tensor containing the state of the environment
     newvals
-        ?
+        tensor containing updated value function outputs (for optimization)
     optimizer
         Adam optimizer
     loss
-        ?
+        loss tensor. Debug purposes.
     """
     with tf.variable_scope("value"):
         state = tf.placeholder("float",[None,4])
@@ -113,7 +113,28 @@ def value_gradient():
         optimizer = tf.train.AdamOptimizer(0.1).minimize(loss)
         return calculated, state, newvals, optimizer, loss
 
-def run_episode(env, policy_grad, value_grad, sess):
+def run_episode(env, policy_grad, value_grad, sess, render = False):
+    """
+    This function implements the main part of PG
+
+    Params
+    -------
+    env
+        Environment where to use PG
+    policy_grad
+        Policy gradient function that a) calculates the policy and b) optimizes it
+    value_grad
+        Value network (the critic)
+    sess
+        TF session object
+
+    Returns
+    -------
+    totalreward
+        the total reward of the episode (200 steps)
+
+    """
+    # initialize variables
     pl_calculated, pl_state, pl_actions, pl_advantages, pl_optimizer = policy_grad
     vl_calculated, vl_state, vl_newvals, vl_optimizer, vl_loss = value_grad
     observation = env.reset()
@@ -124,15 +145,19 @@ def run_episode(env, policy_grad, value_grad, sess):
     transitions = []
     update_vals = []
 
-
+                            # 2.1 Collect a set of trajectories by executing the current policy
     for _ in range(200):
+        if render:
+            env.render()
+                            # 2.2 At each timestep in each trajectory, compute
+                            # 2.2.1 the return $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$ and
         # calculate policy
         obs_vector = np.expand_dims(observation, axis=0)
         probs = sess.run(pl_calculated,feed_dict={pl_state: obs_vector})
         action = 0 if random.uniform(0,1) < probs[0][0] else 1
         # record the transition
         states.append(observation)
-        actionblank = np.zeros(2)
+        actionblank = np.zeros(2) # hardcode to specific environment
         actionblank[action] = 1
         actions.append(actionblank)
         # take the action in the environment
@@ -143,7 +168,10 @@ def run_episode(env, policy_grad, value_grad, sess):
 
         if done:
             break
+
     for index, trans in enumerate(transitions):
+                            # 2.2.2 the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
+        # invidivual transition
         obs, action, reward = trans
 
         # calculate discounted monte-carlo return
@@ -159,14 +187,19 @@ def run_episode(env, policy_grad, value_grad, sess):
         # advantage: how much better was this action than normal
         advantages.append(future_reward - currentval)
 
-        # update the value function towards new return
+        # add future_reward to update the value function towards new return
         update_vals.append(future_reward)
 
+                                # 2.3 Re-fit the baseline (recomputing the value function) by minimizing
+                                #    $|| b(s_t) - R_t||^2$, summed over all trajectories and timesteps.
     # update value function
     update_vals_vector = np.expand_dims(update_vals, axis=1)
     sess.run(vl_optimizer, feed_dict={vl_state: states, vl_newvals: update_vals_vector})
     # real_vl_loss = sess.run(vl_loss, feed_dict={vl_state: states, vl_newvals: update_vals_vector})
 
+                                # 2.4 Update the policy, using a policy gradient estimate $\hat{g}$,
+                                #    which is a sum of terms
+                                #       $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
     advantages_vector = np.expand_dims(advantages, axis=1)
     sess.run(pl_optimizer, feed_dict={pl_state: states, pl_advantages: advantages_vector, pl_actions: actions})
 
@@ -174,20 +207,24 @@ def run_episode(env, policy_grad, value_grad, sess):
 
 
 env = gym.make('CartPole-v0')
-# env.monitor.start('cartpole-hill/', force=True)
+                            # 1. Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
 policy_grad = policy_gradient()
 value_grad = value_gradient()
 sess = tf.InteractiveSession()
 sess.run(tf.initialize_all_variables())
-for i in range(2000):
+                            # 2. For iteration=1,2,... do
+for i in range(500):
     reward = run_episode(env, policy_grad, value_grad, sess)
-    if reward == 200:
-        print("reward 200")
-        print(i)
-        break
+    print("episode ",i, "reward: ",reward)
+    # if reward == 200:
+    #     print("reward 200")
+    #     print(i)
+    #     break
+                            # 3. **end for**
+
+# Validate the training in 1000 epidodes
 t = 0
 for _ in range(1000):
-    reward = run_episode(env, policy_grad, value_grad, sess)
+    reward = run_episode(env, policy_grad, value_grad, sess, render=True)
     t += reward
 print(t / 1000)
-# env.monitor.close()
