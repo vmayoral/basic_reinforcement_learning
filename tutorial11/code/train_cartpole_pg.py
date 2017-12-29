@@ -18,6 +18,8 @@ Vanilla Policy Gradient (PG)
     - https://theneuralperspective.com/2016/11/26/1656/
     - https://theneuralperspective.com/2016/11/25/reinforcement-learning-rl-policy-gradients-i/
     - https://gist.github.com/cgnicholls/0127c885dbff07fde8dc1d7bfe62ac1a
+    - https://github.com/dennybritz/reinforcement-learning/tree/master/PolicyGradient
+    - https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/CliffWalk%20REINFORCE%20with%20Baseline%20Solution.ipynb
 
 - Paper: http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf
 - Pseudocode (vanilla PG):
