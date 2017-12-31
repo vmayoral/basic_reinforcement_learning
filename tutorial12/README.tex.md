@@ -29,13 +29,13 @@ where $\alpha_{h}\in\mathbb{R}^{+}$ denotes a learning rate and $h\in\{0,1,2,\ld
 | Term | Definition |
 |------|------------|
 | $s$ | the state (also found in literature as $x$) |
-|  $a$ | the action (also found as $u$) |
+| $a$ | the action (also found as $u$) |
 | $r$ | the reward |
 | $k$ | time step |
 | $\mathbf{s}_{k+1}\sim p\left(  \mathbf{s}_{k+1}\left\vert \mathbf{s}_{k},\mathbf{a}_{k}\right.  \right)$ |  probability distribution representing the stochasticity of the environment |
 | ... | ... |
 | $\gamma = \left\lbrace \begin{array}{ll} \textup{if discounted reinforcement learning} &  [0,1] \\
-\textup{if average reward } & \frac{1}{H} \end{array}\right.$ |  discounted rate |
+\textup{if average reward } & \frac{1}{H} \end{array}\right.$ |  discount factor |
 | $\tau$ | trajectories |
 | $\mathbf{\tau}\sim p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right) =p\left(  \left. \mathbf{\tau}\right\vert \mathbf{\theta}\right)$ | roll-outs |
 | $r(\mathbf{\tau})=\sum\textstyle_{k=0}^{H}\gamma r_{k}$ | return in the roll-outs |
