@@ -57,26 +57,50 @@ which implies that:
 
 as only the policy depends on <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.173588500000005pt height=22.831379999999992pt/>. Thus, the derivatives of <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/857606fb064ea1680d2dc215438d7336.svg?invert_in_darkmode" align=middle width=105.39044999999999pt height=24.65759999999998pt/> do not have to be computed and no model needs to be maintained. However, if we had a deterministic policy <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/40a32049a9ecb5345010ceaf9f93ab11.svg?invert_in_darkmode" align=middle width=61.309214999999995pt height=24.65759999999998pt/> instead of a stochastic policy <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/67129ee39dc2819f1f47ac6d7c7e5461.svg?invert_in_darkmode" align=middle width=75.064935pt height=24.65759999999998pt/> , computing such a derivative would require the derivative <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/1b70b8f3ae4ab07ccc567edb1ac3990e.svg?invert_in_darkmode" align=middle width=407.96035499999994pt height=24.65759999999998pt/> and, hence, it would require a system model.
 
+In order to reduce the variance of the gradient estimator, a constant baseline can be subtracted from the gradient, i.e.,
+
+<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/71baaea0aa6ae52b03a297979e77926d.svg?invert_in_darkmode" align=middle width=270.21225pt height=16.438356pt/></p>
+
+where the baseline <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/278878512269e8ec072ffd7106474c1b.svg?invert_in_darkmode" align=middle width=39.018209999999996pt height=22.831379999999992pt/> can be chosen arbitrarily (Williams, 1992). It is straightforward to show that this baseline does not introduce bias in the gradient as differentiating <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/ab0ae96fa3c555e144140b7d738508a1.svg?invert_in_darkmode" align=middle width=109.75436999999998pt height=26.48447999999999pt/> implies that:
+
+<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/18b8346d537952cea47e65c1bf0f2b12.svg?invert_in_darkmode" align=middle width=142.30557pt height=37.352039999999995pt/></p>
+
+and, hence, the constant baseline will vanish for infinite data while reducing the variance of the gradient estimator for finite data. See Peters & Schaal, 2008 for an overview of how to choose the baseline optimally. Therefore, the general path likelihood ratio estimator or episodic REINFORCE gradient estimator is given by
+
+<p align="center"><img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/7a444da55d1ce5fffbe31d3b30422081.svg?invert_in_darkmode" align=middle width=404.02394999999996pt height=39.45249pt/></p>
+
+where <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/7759cb428e2d3ec6006c12264042547c.svg?invert_in_darkmode" align=middle width=17.351730000000003pt height=24.65759999999998pt/> denotes the average over trajectories. This type of method is guaranteed to converge to the true gradient at the fastest theoretically possible error decrease of <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/a75d3f76675eb9c964afc4a6bc7c57b9.svg?invert_in_darkmode" align=middle width=70.25584500000001pt height=29.19113999999999pt/> where I denotes the number of roll-outs (Glynn, 1987) even if the data is generated from a highly stochastic system.
 
 Pseudocode:
 ```
 1. Initialize policy (e.g. NNs) parameter <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.173588500000005pt height=22.831379999999992pt/> and baseline <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/4bdc8d9bcfb35e1c9bfb51fc69687dfc.svg?invert_in_darkmode" align=middle width=7.054855500000005pt height=22.831379999999992pt/>
 2. For iteration=1,2,... do
-    2.1 Collect a set of trajectories by executing the current policy
+    2.1 Collect a set of trajectories by executing the current policy obtaining $\mathbf{s}_{0:H},\mathbf{a}_{0:H},r_{0:H}$
     2.2 At each timestep in each trajectory, compute
         2.2.1 the return $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$ and
         2.2.2 the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
     2.3 Re-fit the baseline (recomputing the value function) by minimizing
         $|| b(s_t) - R_t||^2$, summed over all trajectories and timesteps.
+
+          $b=\frac{\left\langle \left(  \sum\nolimits_{h=0}^{H} \mathbf{\nabla}_{\theta_{k}}\log\pi_{\mathbf{\theta}}\left(  \mathbf{a}_{h}\left\vert \mathbf{s}_{h}\right.  \right)  \right)  ^{2}\sum\nolimits_{l=0}^{H} \gamma r_{l}\right\rangle }{\left\langle \left(
+          \sum\nolimits_{h=0}^{H}\mathbf{\nabla}_{\theta_{k}}\log\pi_{\mathbf{\theta}
+          }\left(  \mathbf{a}_{h}\left\vert \mathbf{x}_{h}\right.  \right)  \right)
+          ^{2}\right\rangle }$
+
     2.4 Update the policy, using a policy gradient estimate $\hat{g}$,
-        which is a sum of terms
-            $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
+        which is a sum of terms $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$.
+        In other words:
+
+          $g_{k}=\left\langle \left(  \sum\nolimits_{h=0}^{H}\mathbf{\nabla
+          }_{\theta_{k}}\log\pi_{\mathbf{\theta}}\left(  \mathbf{a}_{h}\left\vert
+          \mathbf{s}_{h}\right.  \right)  \right)  \left(  \sum\nolimits_{l=0}^{H}
+          \gamma r_{l}-b\right)  \right\rangle$
 3. **end for**
 ```
 
+### Code
 
-In this section, we will study different approaches and discuss their properties.
-
+A discrete implementation of VPG can be found [here](code/train_cartpole_pg.py). The code includes comments with the pseudo-code presented above for readibility.
 
 
 
