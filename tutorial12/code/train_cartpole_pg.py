@@ -241,7 +241,7 @@ value_grad = value_gradient()
 sess = tf.InteractiveSession()
 sess.run(tf.initialize_all_variables())
                             # 2. For iteration=1,2,... do
-for i in range(500):
+for i in range(1000):
     reward = run_episode(env, policy_grad, value_grad, sess)
     print("episode ",i, "reward: ",reward)
     # if reward == 200:

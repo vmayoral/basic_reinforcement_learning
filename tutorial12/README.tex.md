@@ -94,26 +94,64 @@ as only the policy depends on $\theta$. Thus, the derivatives of $p\left(  \math
 \mathbf{\nabla}_{\mathbf{\theta}}
 \pi_{\mathbf{\theta}}\left(\mathbf{s}_{k}\right)$ and, hence, it would require a system model.
 
+In order to reduce the variance of the gradient estimator, a constant baseline can be subtracted from the gradient, i.e.,
+
+$$
+\mathbf{\nabla}_{\mathbf{\theta}}J\left(  \mathbf{\theta}\right)  =E\left\{
+\mathbf{\nabla}_{\mathbf{\theta}}\log p_{\mathbf{\theta}}\left(  \mathbf{\tau
+}\right)  \left(  r(\mathbf{\tau})-b\right)  \right\}
+$$
+
+where the baseline $b\in\mathbb{R} $ can be chosen arbitrarily (Williams, 1992). It is straightforward to show that this baseline does not introduce bias in the gradient as differentiating $\int_{\mathbb{T}}
+p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right)  d\mathbf{\tau}=1$ implies that:
+
+$$
+\int_{\mathbb{T}}\mathbf{\nabla}_{\mathbf{\theta}
+}p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right)  d\mathbf{\tau}=0
+\ ,
+$$
+
+and, hence, the constant baseline will vanish for infinite data while reducing the variance of the gradient estimator for finite data. See Peters & Schaal, 2008 for an overview of how to choose the baseline optimally. Therefore, the general path likelihood ratio estimator or episodic REINFORCE gradient estimator is given by
+
+$$
+\mathbf{g}_{\text{RF}}=\left\langle \left(  \sum\nolimits_{k=0}^{H}
+\mathbf{\nabla}_{\mathbf{\theta}}\log\pi_{\mathbf{\theta}}\left(
+\mathbf{a}_{k}\left\vert \mathbf{s}_{k}\right.  \right)  \right)  \left(
+\sum\nolimits_{l=0}^{H} \gamma r_{l}-b\right)  \right\rangle,
+$$
+
+where $\left\langle \cdot\right\rangle $ denotes the average over trajectories. This type of method is guaranteed to converge to the true gradient at the fastest theoretically possible error decrease of $O\left(I^{-1/2}\right)$ where I denotes the number of roll-outs (Glynn, 1987) even if the data is generated from a highly stochastic system.
 
 Pseudocode:
 ```
 1. Initialize policy (e.g. NNs) parameter $\theta$ and baseline $b$
 2. For iteration=1,2,... do
-    2.1 Collect a set of trajectories by executing the current policy
+    2.1 Collect a set of trajectories by executing the current policy obtaining $\mathbf{s}_{0:H},\mathbf{a}_{0:H},r_{0:H}$
     2.2 At each timestep in each trajectory, compute
         2.2.1 the return $R_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}r_{t'}$ and
         2.2.2 the advantage estimate $\hat{A_t} = R_t - b(s_t)$.
     2.3 Re-fit the baseline (recomputing the value function) by minimizing
         $|| b(s_t) - R_t||^2$, summed over all trajectories and timesteps.
+
+          $b=\frac{\left\langle \left(  \sum\nolimits_{h=0}^{H} \mathbf{\nabla}_{\theta_{k}}\log\pi_{\mathbf{\theta}}\left(  \mathbf{a}_{h}\left\vert \mathbf{s}_{h}\right.  \right)  \right)  ^{2}\sum\nolimits_{l=0}^{H} \gamma r_{l}\right\rangle }{\left\langle \left(
+          \sum\nolimits_{h=0}^{H}\mathbf{\nabla}_{\theta_{k}}\log\pi_{\mathbf{\theta}
+          }\left(  \mathbf{a}_{h}\left\vert \mathbf{x}_{h}\right.  \right)  \right)
+          ^{2}\right\rangle }$
+
     2.4 Update the policy, using a policy gradient estimate $\hat{g}$,
-        which is a sum of terms
-            $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$
+        which is a sum of terms $\nabla_\theta log\pi(a_t | s_t,\theta)\hat(A_t)$.
+        In other words:
+
+          $g_{k}=\left\langle \left(  \sum\nolimits_{h=0}^{H}\mathbf{\nabla
+          }_{\theta_{k}}\log\pi_{\mathbf{\theta}}\left(  \mathbf{a}_{h}\left\vert
+          \mathbf{s}_{h}\right.  \right)  \right)  \left(  \sum\nolimits_{l=0}^{H}
+          \gamma r_{l}-b\right)  \right\rangle$
 3. **end for**
 ```
 
+### Code
 
-In this section, we will study different approaches and discuss their properties.
-
+A discrete implementation of VPG can be found [here](code/train_cartpole_pg.py). The code includes comments with the pseudo-code presented above for readibility.
 
 
 
