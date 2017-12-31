@@ -38,14 +38,14 @@ where $\alpha_{h}\in\mathbb{R}^{+}$ denotes a learning rate and $h\in\{0,1,2,\ld
 \textup{if average reward } & \frac{1}{H} \end{array}\right.$ |  discounted rate |
 | $\tau$ | trajectories |
 | $\mathbf{\tau}\sim p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right) =p\left(  \left. \mathbf{\tau}\right\vert \mathbf{\theta}\right)$ | roll-outs |
-| $r(\mathbf{\tau})=\sum\textstyle_{k=0}^{H}\gamma_{k}r_{k}$ | return in the roll-outs |
+| $r(\mathbf{\tau})=\sum\textstyle_{k=0}^{H}\gamma r_{k}$ | return in the roll-outs |
 | ... | ... |
 
 ### Vanilla Policy Gradient
 
 The main problem in policy gradient methods is to obtain a good estimator of the policy gradient $\left \mathbf{\nabla}_{\mathbf{\theta}}J\right\vert_{\mathbf{\theta}=\mathbf{\theta}_{h}}\ . $ In robotics, people have traditionally used deterministic model-based methods for obtaining the gradient however, this approach does not scale well as one needs to be able to model every detail of the system. Alternatively, we can estimate the policy gradient simply from data generated during the execution of a task, i.e., without the need for a model. The most prominent approaches for policy gradient estimation, which have been applied to robotics are: finite-difference and likelihood ratio methods (better known as REINFORCE in the RL community). According to (cite PG methods paper), of these two, the latter has a variety of advantages in comparison to finite difference methods when applied to robotics.
 
-In likelihood ration methods we assume that trajectories $\tau$ are generated from a system by roll-outs, i.e., $\mathbf{\tau}\sim p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right) =p\left(  \left. \mathbf{\tau}\right\vert \mathbf{\theta}\right)$ with return $r(\mathbf{\tau})=\sum\textstyle_{k=0}^{H}\gamma_{k}r_{k}$ which leads to $J(\theta) = E\left\{ r(\tau) \right\} = \int_{\mathbb{T}} p_{\mathbf{\theta}}\left( \mathbf{\tau}\right)  r(\mathbf{\tau})d\mathbf{\tau} \ $. In this case, the policy gradient can be estimated using the likelihood ratio (see e.g. Glynn, 1987; Aleksandrov, Sysoyev, and Shemeneva, 1968) better known as REINFORCE (Williams, 1992) trick, i.e., by using:
+In likelihood ration methods we assume that trajectories $\tau$ are generated from a system by roll-outs, i.e., $\mathbf{\tau}\sim p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right) =p\left(  \left. \mathbf{\tau}\right\vert \mathbf{\theta}\right)$ with return $r(\mathbf{\tau})=\sum\textstyle_{k=0}^{H}\gamma r_{k}$ which leads to $J(\theta) = E\left\{ r(\tau) \right\} = \int_{\mathbb{T}} p_{\mathbf{\theta}}\left( \mathbf{\tau}\right)  r(\mathbf{\tau})d\mathbf{\tau} \ $. In this case, the policy gradient can be estimated using the likelihood ratio (see e.g. Glynn, 1987; Aleksandrov, Sysoyev, and Shemeneva, 1968) better known as REINFORCE (Williams, 1992) trick, i.e., by using:
 
 $$
 \mathbf{\nabla}_{\mathbf{\theta}}p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right) =
@@ -68,7 +68,7 @@ r(\mathbf{\tau})d\mathbf{\tau}
 r(\mathbf{\tau})\right\}.
 $$
 
-As the expectation $E\{\cdot\}$ can be replaced by sample averages, denoted by $\langle\cdot\rangle\$ , only the derivative $\mathbf{\nabla}_{\mathbf{\theta}}\log p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right)$ is needed for the estimator. Importantly, this derivative can be computed without knowledge of the generating distribution $p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right)$ as:
+As the expectation $E\{\cdot\}$ can be replaced by sample averages, denoted by $\langle\cdot\rangle\ $ , only the derivative $\mathbf{\nabla}_{\mathbf{\theta}}\log p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right)$ is needed for the estimator. Importantly, this derivative can be computed without knowledge of the generating distribution $p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right)$ as:
 
 $$
 p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right)=p(\mathbf{s}_{0})\prod\nolimits_{k=0}
@@ -77,6 +77,22 @@ p_{\mathbf{\theta}}\left(  \mathbf{\tau}\right)=p(\mathbf{s}_{0})\prod\nolimits_
 _{k}\right.  \right)
 $$
 
+which implies that:
+
+$$
+\mathbf{\nabla}_{\mathbf{\theta}}\log p_{\mathbf{\theta}}\left(  \mathbf{\tau
+}\right)  =\sum\nolimits_{k=0}^{H}\mathbf{\nabla}_{\mathbf{\theta}}\log
+\pi_{\mathbf{\theta}}\left(  \mathbf{a}_{k}\left\vert \mathbf{s}_{k}\right.
+\right)
+$$
+
+as only the policy depends on $\theta$. Thus, the derivatives of $p\left(  \mathbf{s}_{k+1}\left\vert \mathbf{s}_{k},\mathbf{a}_{k}\right.\right)$ do not have to be computed and no model needs to be maintained. However, if we had a deterministic policy $\mathbf{a}=\pi(\mathbf{s})$ instead of a stochastic policy $\mathbf{a}\sim\pi(\mathbf{a}|\mathbf{s})\ $ , computing such a derivative would require the derivative $\mathbf{\nabla}_{\mathbf{\theta}}\log p\left(
+\mathbf{s}_{k+1}\left\vert \mathbf{s}_{k},\mathbf{a}_{k}\right.
+\right) =
+\mathbf{\nabla}_{\mathbf{a}_k}\log p\left(  \mathbf{s}_{k+1}\left\vert
+\mathbf{s}_{k},\mathbf{a}_{k}\right.\right)
+\mathbf{\nabla}_{\mathbf{\theta}}
+\pi_{\mathbf{\theta}}\left(\mathbf{s}_{k}\right)$ and, hence, it would require a system model.
 
 
 Pseudocode:
