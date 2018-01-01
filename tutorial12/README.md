@@ -24,12 +24,12 @@ where <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master/
 | Term | Definition |
 |------|------------|
 | <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/6f9bad7347b91ceebebd3ad7e6f6f2d1.svg?invert_in_darkmode" align=middle width=7.705549500000004pt height=14.155350000000013pt/> | the state (also found in literature as <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/332cc365a4987aacce0ead01b8bdcc0b.svg?invert_in_darkmode" align=middle width=9.395100000000005pt height=14.155350000000013pt/>) |
-|  <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/44bc9d542a92714cac84e01cbbb7fd61.svg?invert_in_darkmode" align=middle width=8.689230000000004pt height=14.155350000000013pt/> | the action (also found as <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/6dbb78540bd76da3f1625782d42d6d16.svg?invert_in_darkmode" align=middle width=9.410280000000004pt height=14.155350000000013pt/>) |
+| <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/44bc9d542a92714cac84e01cbbb7fd61.svg?invert_in_darkmode" align=middle width=8.689230000000004pt height=14.155350000000013pt/> | the action (also found as <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/6dbb78540bd76da3f1625782d42d6d16.svg?invert_in_darkmode" align=middle width=9.410280000000004pt height=14.155350000000013pt/>) |
 | <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/89f2e0d2d24bcf44db73aab8fc03252c.svg?invert_in_darkmode" align=middle width=7.873024500000003pt height=14.155350000000013pt/> | the reward |
 | <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/63bb9849783d01d91403bc9a5fea12a2.svg?invert_in_darkmode" align=middle width=9.075495000000004pt height=22.831379999999992pt/> | time step |
 | <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/4b43b99577e49c30237a75b10434a256.svg?invert_in_darkmode" align=middle width=159.496755pt height=24.65759999999998pt/> |  probability distribution representing the stochasticity of the environment |
 | ... | ... |
-| <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/5b16931dbf74748d0ce023fa18b1fa50.svg?invert_in_darkmode" align=middle width=358.966905pt height=47.67179999999999pt/> |  discounted rate |
+| <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/5b16931dbf74748d0ce023fa18b1fa50.svg?invert_in_darkmode" align=middle width=358.966905pt height=47.67179999999999pt/> |  discount factor |
 | <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/0fe1677705e987cac4f589ed600aa6b3.svg?invert_in_darkmode" align=middle width=9.046950000000002pt height=14.155350000000013pt/> | trajectories |
 | <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/160a51dd5dc4e05542d6540b3c1f29b7.svg?invert_in_darkmode" align=middle width=143.45627999999996pt height=24.65759999999998pt/> | roll-outs |
 | <img src="https://rawgit.com/vmayoral/basic_reinforcement_learning/master//tutorial12/tex/71e2e285c679246c5443054b075b010d.svg?invert_in_darkmode" align=middle width=120.55230000000002pt height=27.656969999999987pt/> | return in the roll-outs |
@@ -97,6 +97,15 @@ Pseudocode:
           \gamma r_{l}-b\right)  \right\rangle$
 3. **end for**
 ```
+
+### Stochastic vs deterministic policy
+From https://www.quora.com/Whats-the-difference-between-deterministic-policy-gradient-and-stochastic-policy-gradient:
+
+>In stochastic policy gradient, actions are drawn from a distribution parameterized by your policy. For example, your robot’s motor torque might be drawn from a Normal distribution with mean μμ and deviation σσ. Where your policy will predict μμ and σσ. When you draw from this distribution and evaluate your policy, you can move your mean closer to samples that led to higher reward and farther from samples that led to lower reward, and reduce your deviation as you become more confident.
+>
+>When you reduce the variance to 0, we get a policy that is deterministic. In deterministic policy gradient, we directly take the gradients of μμ.
+>
+>In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space. As a result, computing the stochastic policy gradient may require more samples, especially if the action space has many dimensions.
 
 ### Code
 
