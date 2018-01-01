@@ -162,6 +162,7 @@ From https://www.quora.com/Whats-the-difference-between-deterministic-policy-gra
 
 A discrete implementation of VPG can be found [here](code/train_cartpole_pg.py). The code includes comments with the pseudo-code presented above for readibility.
 
+A continuous implementation of VPG using Actor-Critic methods is available [here](code/train_mountaincar_continuous_pg.py).
 
 
 # Sources:
