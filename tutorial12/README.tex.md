@@ -149,6 +149,15 @@ Pseudocode:
 3. **end for**
 ```
 
+### Stochastic vs deterministic policy
+From https://www.quora.com/Whats-the-difference-between-deterministic-policy-gradient-and-stochastic-policy-gradient:
+
+>In stochastic policy gradient, actions are drawn from a distribution parameterized by your policy. For example, your robot’s motor torque might be drawn from a Normal distribution with mean μμ and deviation σσ. Where your policy will predict μμ and σσ. When you draw from this distribution and evaluate your policy, you can move your mean closer to samples that led to higher reward and farther from samples that led to lower reward, and reduce your deviation as you become more confident.
+>
+>When you reduce the variance to 0, we get a policy that is deterministic. In deterministic policy gradient, we directly take the gradients of μμ.
+>
+>In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space. As a result, computing the stochastic policy gradient may require more samples, especially if the action space has many dimensions.
+
 ### Code
 
 A discrete implementation of VPG can be found [here](code/train_cartpole_pg.py). The code includes comments with the pseudo-code presented above for readibility.

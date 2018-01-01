@@ -9,14 +9,26 @@ import collections
 import sklearn.pipeline
 import sklearn.preprocessing
 import plotting
+from baselines import logger
 
 from sklearn.kernel_approximation import RBFSampler
 
 """
-Policy Gradient for solving a continuous mountian car environments.
-    Inspired from https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/Continuous%20MountainCar%20Actor%20Critic%20Solution.ipynb
+Vanilla Policy Gradient implemented using Actor-Critic
+method to reduce the variance.
 
-Next steps:
+This algorithm implements an Actor Critic Model (ACM)
+which separates the policy from the value approximation process by
+parameterizing the policy separately.
+
+    Inspired from
+    - https://github.com/dennybritz/reinforcement-learning/blob/master/PolicyGradient/Continuous%20MountainCar%20Actor%20Critic%20Solution.ipynb
+    - http://home.deib.polimi.it/restelli/MyWebSite/pdf/rl7.pdf
+    - http://www0.cs.ucl.ac.uk/staff/D.Silver/web/Teaching_files/pg.pdf
+    - https://repository.tudelft.nl/islandora/object/uuid:682a56ed-8e21-4b70-af11-0e8e9e298fa2?collection=education
+    - https://www.quora.com/Whats-the-difference-between-deterministic-policy-gradient-and-stochastic-policy-gradient
+
+Papers that follow from this:
     - DPG: http://proceedings.mlr.press/v32/silver14.pdf
     - DDPG: https://arxiv.org/pdf/1509.02971v2.pdf
 """
@@ -143,7 +155,6 @@ def actor_critic(env, estimator_policy, estimator_value, num_episodes, discount_
     """
     Actor Critic Algorithm. Optimizes the policy
     function approximator using policy gradient.
-
     Parameters
     ----------
     env: object
@@ -156,7 +167,6 @@ def actor_critic(env, estimator_policy, estimator_value, num_episodes, discount_
         Number of episodes to run for
     discount_factor: float
         Time-discount factor
-
     Returns
     -------
     An EpisodeStats object with two numpy arrays for episode_lengths and episode_rewards.
@@ -200,16 +210,132 @@ def actor_critic(env, estimator_policy, estimator_value, num_episodes, discount_
             state = next_state
     return stats
 
+def learn(env, estimator_policy, estimator_value,
+            max_timesteps=1000,
+            discount_factor=1.0,
+            print_freq=100,
+            outdir="/tmp/experiments/continuous/VPG/"):
+    """
+    Vanilla Policy Gradient (VPG) extended using basic Actor-Critic techniques to reduce the variance.
+    This method optimizes the value function approximator using policy gradient.
+
+    Parameters
+    ----------
+    env: object
+        OpenAI environment.
+    estimator_policy: object
+        Policy Function to be optimized
+    estimator_value: object
+        Value function approximator, used as a critic
+    max_timesteps: int
+        Number of steps to run for
+    discount_factor: float
+        Time-discount factor (gamma)
+    print_freq: int
+        Period (in episodes) to log results
+    outdir: string
+        Directory where to store tensorboard results
+
+    Returns
+    -------
+    An EpisodeStats object with two numpy arrays for episode_lengths and episode_rewards.
+    """
+    # tensorboard logging
+    summary_writer = tf.summary.FileWriter(outdir, graph=tf.get_default_graph())
+    # Keeps track of useful statistics
+    # stats = plotting.EpisodeStats(
+    #     episode_lengths=np.zeros(num_episodes),
+    #     episode_rewards=np.zeros(num_episodes))
+
+    # # Variable to represent the number of steps executed
+    # Transition = collections.namedtuple("Transition", ["state", "action", "reward", "next_state", "done"])
+
+    # Record number of episodes
+    num_episodes = 0
+    # Reset the environment and get firs state
+    state = env.reset()
+    # each episode's reward
+    episode_reward = 0
+    for timestep in range(max_timesteps):
+        # episode = []
+        # One step in the environment
+        # for t in itertools.count():
+
+        # env.render()
+        action = estimator_policy.predict(state)
+        next_state, reward, done, _ = env.step(action)
+
+        # # Keep track of the transition
+        # episode.append(Transition(
+        #   state=state, action=action, reward=reward, next_state=next_state, done=done))
+
+        # Update statistics
+        # stats.episode_rewards[num_episodes] += reward
+        episode_reward += reward
+        # stats.episode_lengths[num_episodes] = timestep
+
+        # Calculate TD Target
+        #   More about TD-learning at:
+            # http://www.scholarpedia.org/article/Reinforcement_learning
+            # http://www.scholarpedia.org/article/TD-learning
+        value_next = estimator_value.predict(next_state)
+        td_target = reward + discount_factor * value_next
+        td_error = td_target - estimator_value.predict(state)
+        # Update the value estimator
+        estimator_value.update(state, td_target)
+        # Update the policy estimator
+        # using the td error as our advantage estimate
+        estimator_policy.update(state, td_error, action)
+
+        # # Print out which step we're on, useful for debugging.
+        # print("\rStep {} @ Episode {} ({})".format(
+        #         timestep + 1, num_episodes, episode_reward), end="")
+
+        if done:
+            # Log the episode reward
+            # episode_total_rew = stats.episode_rewards[num_episodes]
+            summary = tf.Summary(value=[tf.Summary.Value(tag="Episode reward",
+                simple_value = episode_reward)])
+            summary_writer.add_summary(summary, timestep)
+            summary_writer.flush()
+
+            # Reset the environment and get firs state
+            state = env.reset()
+
+            if print_freq is not None and num_episodes % print_freq == 0:
+                logger.record_tabular("steps", timestep)
+                logger.record_tabular("episode", num_episodes)
+                logger.record_tabular("reward", episode_reward)
+                # logger.record_tabular("% time spent exploring", int(100 * exploration.value(t)))
+                logger.dump_tabular()
+
+            # Iterate episodes
+            num_episodes +=1
+
+            # Reset the episode reward
+            episode_reward = 0
+        else:
+            state = next_state
+
+    return estimator_policy
+
+def act(observation):
+    """
+    Parameters
+    ----------
+    observation: object
+        Observation that can be feed into the output of make_obs_ph
+
+    Returns
+    ----------
+    action: object
+        An action for the environment
+    """
+    # TODO: implement if necessary
+    pass
+
 env = gym.envs.make("MountainCarContinuous-v0")
-
-# get primitives to scale and featurize samples
-# TODO: explore the impact of not using scaling and featurizing
 scaler, featurizer = preprocess()
-
-# sample = env.observation_space.sample()
-# # print(sample)
-# featurize_state(sample)
-
 tf.reset_default_graph()
 
 global_step = tf.Variable(0, name="global_step", trainable=False)
@@ -219,16 +345,22 @@ value_estimator = ValueEstimator(learning_rate=0.1)
 with tf.Session() as sess:
     sess.run(tf.initialize_all_variables())
     # Note, due to randomness in the policy the number of episodes you need varies
-    # TODO: Sometimes the algorithm gets stuck, I'm not sure what exactly is happening there.
-    stats = actor_critic(env, policy_estimator, value_estimator, 50, discount_factor=0.95)
+    g = tf.Graph()
+    with g.as_default():
+        for i in range(10):
+            policy_estimator = learn(env, policy_estimator, value_estimator, max_timesteps=100000,
+                    discount_factor=0.95,
+                    print_freq=10,
+                    outdir="/tmp/experiments/continuous/VPG/"+str(i)+"/")
 
-    plotting.plot_episode_stats(stats, smoothing_window=10)
+    # plotting.plot_episode_stats(stats, smoothing_window=10)
 
-    state = env.reset()
-    while 1:
-        env.render()
-        action = policy_estimator.predict(state)
-        next_state, reward, done, _ = env.step(action)
-        if done:
-            state = env.reset()
-        state = next_state
+    # # Try it out
+    # state = env.reset()
+    # while 1:
+    #     env.render()
+    #     action = policy_estimator.predict(state)
+    #     next_state, reward, done, _ = env.step(action)
+    #     if done:
+    #         state = env.reset()
+    #     state = next_state
