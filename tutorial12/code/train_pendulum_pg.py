@@ -19,7 +19,7 @@ with tf.Session() as sess:
     policy_estimator = vpg.learn(env, policy_estimator, value_estimator,
                     max_timesteps=100000,
                     discount_factor=0.95,
-                    print_freq=1,
+                    print_freq=10,
                     outdir="/tmp/experiments/VPG/pendulum/100000-2")
 
     # plotting.plot_episode_stats(stats, smoothing_window=10)
