@@ -1,7 +1,7 @@
 #!/bin/sh
 
 TIMESTEPS=100000
-ENVIRONMENT="MountainCarContinuous-v0"
+ENVIRONMENT="Pendulum-v0"
 # PPO1 benchmark
 python3 train_ppo1.py --environment $ENVIRONMENT --num_timesteps $TIMESTEPS
 # VPG benchmark

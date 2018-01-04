@@ -6,11 +6,12 @@ import gym
 import tensorflow as tf
 from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
 import argparse
+from baselines import bench, logger
 
 #parser
 parser = argparse.ArgumentParser()
 parser.add_argument('--environment', dest='environment', type=str, default='MountainCarContinuous-v0')
-parser.add_argument('--max_episode_steps', dest='max_episode_steps', type=int, default=10000)
+parser.add_argument('--num_timesteps', dest='num_timesteps', type=int, default=10000)
 parser.add_argument('--seed', help='RNG seed', type=int, default=0)
 args = parser.parse_args()
 
@@ -22,8 +23,11 @@ config = tf.ConfigProto(allow_soft_placement=True,
 tf.Session(config=config).__enter__()
 def make_env():
     env = gym.make(str(args.environment))
-    # env = bench.Monitor(env, logger.get_dir())
+    logger.configure("/tmp/experiments/"+str(args.environment)+"/PPO2/")
+    env = bench.Monitor(env, logger.get_dir())
+    # print(env.action_space.sample())
     return env
+
 env = DummyVecEnv([make_env])
 env = VecNormalize(env)
 
@@ -34,5 +38,5 @@ ppo2.learn(policy=policy, env=env, nsteps=2048, nminibatches=32,
     ent_coef=0.0,
     lr=3e-4,
     cliprange=0.2,
-    total_timesteps=args.max_episode_steps,
+    total_timesteps=args.num_timesteps,
     outdir="/tmp/experiments/"+str(args.environment)+"/PPO2/") # path for the log files (tensorboard) and models

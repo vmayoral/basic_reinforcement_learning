@@ -11,7 +11,7 @@ parser.add_argument('--environment', dest='environment', type=str, default='Moun
 # parser.add_argument('--environment', dest='environment', nargs='+', type=str, default='InvertedPendulum-v1')
 # parser.add_argument('--repeats', dest='repeats', type=int, default=1)
 # parser.add_argument('--episodes', dest='episodes', type=int, default=10000)
-parser.add_argument('--max_episode_steps', dest='max_episode_steps', type=int, default=10000)
+parser.add_argument('--num_timesteps', dest='num_timesteps', type=int, default=10000)
 # parser.add_argument('--train_steps', dest='train_steps', type=int, default=5)
 # parser.add_argument('--learning_rate', dest='learning_rate', type=float, nargs='+', default=0.01)
 # parser.add_argument('--batch_normalize', dest='batch_normalize', type=bool, default=True)
@@ -44,7 +44,7 @@ with tf.Session() as sess:
     # with g.as_default():
     #     for i in range(10):
     policy_estimator = vpg.learn(env, policy_estimator, value_estimator,
-                    max_timesteps=args.max_episode_steps,
+                    max_timesteps=args.num_timesteps,
                     discount_factor=0.98,
                     print_freq=10,
                     outdir="/tmp/experiments/"+str(args.environment)+"/VPG/")

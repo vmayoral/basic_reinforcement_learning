@@ -6,7 +6,7 @@ import argparse
 #parser
 parser = argparse.ArgumentParser()
 parser.add_argument('--environment', dest='environment', type=str, default='MountainCarContinuous-v0')
-parser.add_argument('--max_episode_steps', dest='max_episode_steps', type=int, default=10000)
+parser.add_argument('--num_timesteps', dest='num_timesteps', type=int, default=10000)
 args = parser.parse_args()
 
 env = gym.envs.make(str(args.environment))
@@ -19,7 +19,7 @@ with g.as_default():
             hid_size=64, num_hid_layers=2)
     pposgd_simple.learn(env,
             policy_fn,
-            max_timesteps=args.max_episode_steps,
+            max_timesteps=args.num_timesteps,
             timesteps_per_actorbatch=2048, # timesteps per actor per update
             # timesteps_per_actorbatch=128, # timesteps per actor per update
             clip_param=0.2,
