@@ -19,8 +19,8 @@ A quick background review of RL is available [here](BACKGROUND.md).
 - [ ] ~~Tutorial 10: [Guided Policy Search (GPS)](tutorial10/README.md)~~ (**unfinished**)
 - [ ] Tutorial 11: [A review of different AI techniques for RL](tutorial11/README.md) (**WIP**)
 - [x] Tutorial 12: [Reviewing Policy Gradient methods](tutorial12/README.md)
-- [ ] Tutorial 13: [Continuous-state spaces with DQN](tutorial13/README.md) (**WIP**)
-- [ ] Tutorial 14: [Benchmarking RL techniques](tutorial13/README.md) (**TODO**)
+- [ ] ~~Tutorial 13: [Continuous-state spaces with DQN](tutorial13/README.md)~~ (**merged**)
+- [x] Tutorial 14: [Benchmarking RL techniques](tutorial14/README.md)
 
 ### References:
 - Chris Watkins, Learning from Delayed Rewards, Cambridge, 1989 ([thesis](http://www.cs.rhul.ac.uk/home/chrisw/new_thesis.pdf))
