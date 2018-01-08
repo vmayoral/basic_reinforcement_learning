@@ -72,3 +72,28 @@ whereas other policy gradient techniques are using the following setups:
 
 Clearly, there seems to be room for improvement here. Let's try redefining VPG using
 `num_hid_layers`: 2 and `hid_size`: 64 with `activation`: `tf.nn.tanh`.
+
+```python
+...
+# Define mu as a 2-hidden layer NN
+h1_mu = tf.contrib.layers.fully_connected(
+    inputs=tf.expand_dims(self.state, 0),
+    num_outputs=64,
+    activation_fn=tf.nn.tanh,
+    weights_initializer=tf.zeros_initializer)
+
+h2_mu = tf.contrib.layers.fully_connected(
+    inputs=h1_mu,
+    num_outputs=64,
+    activation_fn=tf.nn.tanh,
+    weights_initializer=tf.zeros_initializer)
+
+self.mu = tf.contrib.layers.fully_connected(
+    inputs=h2_mu,
+    num_outputs=1,
+    activation_fn=None,
+    weights_initializer=tf.zeros_initializer)
+...
+```
+
+for both `mu` (mean) and `sigma`(stdev) in the policy estimator as well as in the value estimator we obtain the following results:
