@@ -11,6 +11,7 @@ will get benchmarked using OpenAI gym-based environments.
 - [Lesson 4B](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4b-policy-gradients-revisited)
 - [Lesson 5](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-5-natural-policy-gradients-trpo-ppo)
 - [Lesson 6](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-6-nuts-and-bolts-of-deep-rl-experimentation)
+- [Extra Lesson: Frontiers Lecture I](#)
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -289,7 +290,7 @@ It's:
 ### Lesson 6: Nuts and Bolts of Deep RL Experimentation
 Talk about tips on how to make decision on RL.
 
-### Aproaching new problems
+#### Aproaching new problems
 Quick tips for new algorithms:
 - Small environment
 - Visualize everything
@@ -314,15 +315,14 @@ Run your baselines:
   - Well-tuned policy gradient method (e.g.: PPO)
   - Well-tuned Q-learning + SARSA method
 
-
 Usually things work better when you have more samples (per batch). Bigger batches are recommended.
 
-### Ongoing development and tuning
+#### Ongoing development and tuning
 Explore sensitivity to each parameter. If it's too sensitive, got lucky but not robust.
 
 Have a system for continually benchmarking your code. Run a battery of benchmarks occasionally. CI? Automate your experiments.
 
-### General tuning strategies for RL
+#### General tuning strategies for RL
 
 Standardizing data:
 - Rescale observations with: $x' = clip((x- \mu)/\sigma, -10,10)$
@@ -337,7 +337,7 @@ General RL diagnostics:
 - Look at episode returns min/max and stdev along with mean.
 - Look at episode lengths (*sometimes more informative that the reward*), sometimes provides additional information (e.g.: solving problem faster, losing game slower)
 
-### Policy gradient strategies
+#### Policy gradient strategies
 
 Entropy as a diagnostic:
 - If your entropy is going down really fast it means the policy is becoming deterministic and it's not going to explore anything. Be careful also if it's not going down (totally random always). **How do you measure entropy?** For most policies you can compute the entropy analytically. For continuous gaussian policies you can compute the differencial entropies.
@@ -350,19 +350,19 @@ $$
 
 Policy initialization is relevant. Specially in supervised learning. Zero or tiny final layer, to maximize entropy.
 
-### Q-Learning strategies
+#### Q-Learning strategies
 - optimize memory usage (replay buffer)
 - learning rate,
 - schedules are often useful ($\epsilon-Greedy$)
 - converges slowly and has a **misterious warmup** period (DQN)
 
-### Miscellaneous advice
+#### Miscellaneous advice
 - Read older textbooks and theses
 - Don't get too stucked on problems
 - DQN performs pretty poorly for continuous control
 - Techniques from supervised learning don't necessarily work in RL (e.g.: batch norm, dropout, big networks)
 
-### Questions
+#### Questions
 - **How long do you wait until you decide if the algorithm works or not?** No straight answer. For PG, it typically learns fast.
 - **Do you use unit tests?** Only for particular mathematical things.
 - **Do you have guidelines on how to much the algorithm to a particular task?** People have found that PG methods are probably the way to go if you don't care about sample complexity. PG is probably the safest way to go. DQN is a bit indirect of what's doing. If you care about sample complexity or need off-policy data, then DQN. Sample complexity is relevant if your simulator is expensive.
@@ -372,3 +372,125 @@ People have found that DQN works well with images as inputs while PG methods wor
    - ... (didn't catch them)
 - **Comments on evolution strategies**: Lots of PG methods, some complicated. Evolution strategies (simple algorithm) as opposed to PG. OpenAI (and others) claimed EA work as well as PG. His opinion is that the sample complexity is worse by a constant factor (1,3, 100?). This might change between problems. EA might be a good alternative for problems with time dependencies.
 - **Framework for hyperparameter optimization**: He uses uniform sampling. Works really well.
+
+
+### Extra Lesson: Frontiers Lecture I
+Two papers of interest for robotics regarding the SOTA:
+- https://arxiv.org/abs/1610.04286
+- https://arxiv.org/abs/1703.06907
+
+#### Distributional RL
+The value function gives the expected future discount return.
+
+The Bellman equation in a slightly different form can be written as:
+$$
+Q(s,a) = E[R(s,a,s')] + \gamma E[Q(s',a')]
+$$
+
+$Z(s,a)$ will represent the distribution of the return of taking action $a$ in state $s$. The distribution of the Bellman equation can be expressed as:
+$$
+Z(s,a) = R(s,a,S') + \gamma Z(S',A')
+$$
+
+(*capital letters are representing random variables*)
+
+C51 is a specific instantiation of using this previous idea of distributions:
+- C51 outputs a 51-way softmax for each Q-value.
+- Bin the return into 51 equally-sized bins between -10 and 10
+- The Q-value update becomes categorial (instead of the usual regression)
+
+Pseudocode: Categorical Algorithm
+- input A transition $x_t$, $a_t$, $r_t$, $x_{t+1}$, $\gamma_t \in [0,1]$
+  - $Q(x_{t+1},a) := \sum_i z_i p_i (x_{t+1},a)$
+  - $a^* \rarrow argmax_a Q(x_{t+1},a)$
+  - $m_i = 0, i \in 0,...,N-1$
+  - $for j \in 0,...,N -1$ do
+      - # Compute the projection of $T_z_j$  onto the support ${z_i}$
+      - $T_z_j \arrow [r_t + \gamma_t z_j]$_{V_{MIN}}^{V_{MAX}}
+
+... (complete algorithm, minute 8:42)
+
+Resuls shown show that C51 improve DQN by 700%. Furthermore, results using categorical classification (rather than regression) gets us good results. It was a huge advance.
+
+Among the good things about Distributional RL, data efficiency is greatly improved. Why does it work so well? Don't really know. Is it learning to model uncertainty?
+
+PG gradient might obtain better results for the different environments but the hyperparams need to be tuned for each environment.
+
+#### Model-based RL
+Big expectation about it. They think it'll be pretty important. Specially for cases where you have a simulator that's really expensive or you want to do something in the real world, like with robots.
+
+#### Neural Episodic control (NEC)
+An interesting new approach that includes the parametric approach (which is used in all typical methods) and a non-parametric one. Good results on the environments presented.
+
+#### Hierarchical Reinforcement Learning (HRL)
+Intuitive appealing. It hasn't landed into massive breakthroughs just yet.
+
+The basic idea is to capture the structure in the policy space. Goes back to 1993 with "Feudal Reinforcement Learning".
+
+#### Deep RL for Real Robots
+It feels like in the next few years, learning in robots will get us to the point of having robots doing real cool stuff. All the methods they looked so far were really data innefficient.
+
+He claimed we were close to breakthrough (or already on it).
+Two main approaches:
+- Learning in simulation and then doing transfer learning. Simulation variances to fill in the simulation gap.
+- Imitation learning will be important.
+
+### Extra Lesson: Frontiers Lecture II
+
+Small changes in the observatoins lead to the robot failing to generalize.
+
+> We can't build a system that doesn't make mistakes. But maybe we can learn from those mistakes.
+
+What does it take for RL to learn from its mistakes in the real world?
+- Focus on **diversity** rather **proficiency**
+- Self-supervised algorithms, they must have access to the reward.
+- Learn quickly and efficiently
+- Fix mistakes when they happen, adaptability.
+
+Current benchmarks in robotics do not follow the goals of images (e.g.: imagenet). They are small-scale, emphasize mastery and are evaluated on performance.
+
+#### Can we self-supervise diverse real-world tasks?
+By self-supervised learning with robots, Sergey means to have the robot learn a task by itself without human intervention (or with as little as possible).
+
+The open loop (just looking once at the image) works much worse (33.7% failures) than the closed-loop (17.5% failures). There's a big benefit at doing continuous control.
+
+Training with multiple robots improves even more the performance (minute 16:30). They first trained the whole network in one robot and then on the other robot. The end effector is the same, the rest different. Work by Julian Ibarz.
+
+```
+A few comments/ideas after watching this:
+- Modular robots can extend their components seamlessly.
+- This brings clear advantages for the construction of robots however training them with DRL becomes expensive due to the following reasons:
+  - Every small change in the physical structure
+of the robot will require a complete retrain.
+  - Building up the tools to train modular robots (simulation
+    model, virtual drivers for the different actuators, etc)
+    becomes very expensive.
+  - Transferring the results to the real robot is complex given the flexibility of these systems.
+
+- We present a framework/method that makes use of traditional
+tools in the robotics environment (e.g. ROS, Gazebo, etc.) which
+ simplifies the process of building modular robots and their
+ corresponding tools to be trained using DRL techniques. Besides
+integration with the traditional robotics tools, our
+framework/method includes baseline implementations for the most
+common DRL techniques for both value and policy
+ iteration methods. Using this framework we present the results obtained benchmarking DRL methods in a modular robot. Configurations with 3 and 4 degrees of freedom are presented while performing the same task. In addition, we present our insights about the impact of the simulation acceleration in the final reward and conclude with our hypotheses about
+
+
+ Future work: a) generalization between different DOFs (refer to previous work from Julian Ibarz where the overall performance got better after training in two different robots), b) further work on transfer learning with simulation variance, c) inclusion of imitation learning to accelerate the process of learning a particular task, d) inclusion of images to get a much richer signal from where to learn.
+
+Conclusions:
+- Change titles to:
+  - DRL methods/framework for modular robots
+  - An information model for modular robots
+- Participate in the Amazon Picking Challenge with a modular robot and DRL?
+```
+
+Semantic picking results presented. Pretty nice.
+
+#### Where can we get goal supervision
+
+(imitation learning?)
+
+
+#### How can new tasks build on prior tasks
