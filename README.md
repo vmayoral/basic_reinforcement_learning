@@ -21,7 +21,7 @@ A quick background review of RL is available [here](BACKGROUND.md).
 - [x] Tutorial 12: [Reviewing Policy Gradient methods](tutorial12/README.md)
 - [ ] ~~Tutorial 13: [Continuous-state spaces with DQN](tutorial13/README.md)~~ (**merged**)
 - [x] Tutorial 14: [Benchmarking RL techniques](tutorial14/README.md)
-- [ ] Tutorial 15: [Reviewing Vanilla Policy Gradient (VPG)](tutorial15/README.md)
+- [ ] ~~Tutorial 15: [Reviewing Vanilla Policy Gradient (VPG)](tutorial15/README.md)~~ (**failed miserably**)
 
 ### References:
 - Chris Watkins, Learning from Delayed Rewards, Cambridge, 1989 ([thesis](http://www.cs.rhul.ac.uk/home/chrisw/new_thesis.pdf))
