@@ -97,3 +97,7 @@ self.mu = tf.contrib.layers.fully_connected(
 ```
 
 for both `mu` (mean) and `sigma`(stdev) in the policy estimator as well as in the value estimator we obtain the following results:
+
+Didn't help at all. It seems the implementation itself is wrong:
+- https://github.com/dennybritz/reinforcement-learning/issues/110
+- https://github.com/dennybritz/reinforcement-learning/issues/64
