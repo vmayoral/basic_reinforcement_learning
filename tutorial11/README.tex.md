@@ -11,7 +11,10 @@ will get benchmarked using OpenAI gym-based environments.
 - [Lesson 4B](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-4b-policy-gradients-revisited)
 - [Lesson 5](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-5-natural-policy-gradients-trpo-ppo)
 - [Lesson 6](https://github.com/vmayoral/basic_reinforcement_learning/tree/master/tutorial11#lesson-6-nuts-and-bolts-of-deep-rl-experimentation)
-- [Extra Lesson: Frontiers Lecture I](#)
+
+- [Extra Lesson: Frontiers Lecture I](#extra-lesson-frontiers-lecture-i)
+- [Extra Lesson: Frontiers Lecture II](#extra-lesson-frontiers-lecture-ii)
+
 
 ### Lesson 1: Deep RL Bootcamp Lecture 1: Motivation + Overview + Exact Solution Methods
 #### Notes from lesson
@@ -489,8 +492,9 @@ Conclusions:
 Semantic picking results presented. Pretty nice.
 
 #### Where can we get goal supervision
-
 (imitation learning?)
 
-
 #### How can new tasks build on prior tasks
+...
+
+### Lesson 8: Derivative Free Methods
