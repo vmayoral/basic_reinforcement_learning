@@ -12,6 +12,7 @@ This tutorial covers the basics of Q-learning using the cat-mouse-cheese example
 - [Reproduce it yourself](#reproduce)
 
 <div id='background'/>
+
 ### Background
 
 Value Functions are state-action pair functions that estimate how good a particular action will be in a given state, or what the return for that action is expected to be.
@@ -50,6 +51,7 @@ The algorithm can be interpreted as:
 
 
 <div id='world'/>
+
 ### The *World* and *Cat* player implementations
 
 The implementations of the discrete 2D world (including agents, cells and other abstractions) as well as the cat and mouse players is performed in the `cellular.py` file. The world is generated from a `.txt`file. In particular, I'm using the `worlds/waco.txt`:
@@ -112,6 +114,7 @@ class Cat(cellular.Agent):
 Overall, the *Cat* pursues the *Mouse* through the `goTowards` method by calculating the quadratic distance. Whenever it bumps to the wall, it takes a random action.
 
 <div id='mouse'/>
+
 ### The *Mouse* player
 
 The *Mouse* player contains the following attributes:
@@ -185,6 +188,7 @@ The lookup is performed according to the `lookdist` variable that in this implem
 To finish up reviewing the *Mouse* implementation, let's look at how the Q-learning is implemented:
 
 <div id='q-learning'/>
+
 #### Q-learning implementation
 Let's look at the `update` method of the *Mouse* player:
 
@@ -249,6 +253,7 @@ Note that the amount of elements saved in the dictionary for this simplified 2D 
 Given the results showed above, one can observe that for some reason, Python `sys.getsizeof` function seems to be upper bounded by 786712 (768 KB). We can't provide accurate data but given the results showed, one can conclude that the elements generated after **1 million generations should require something close to 10 MB in memory** for this 2D simplified world.
 
 <div id='results'/>
+
 ### Results
 Below we present a *mouse player* after **15 000 generations** of reinforcement learning:
 
@@ -259,6 +264,7 @@ and now we present the same player after **150 000 generations** of reinforcemen
 ![](../img/rl_qlearning_2.gif)
 
 <div id='reproduce'/>
+
 ### Reproduce it yourself
 
 ```bash
