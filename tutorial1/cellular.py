@@ -99,7 +99,7 @@ class World:
         self.display = makeDisplay(self)
         self.directions = directions
         if filename is not None:
-            data = file(filename).readlines()
+            data = open(filename).readlines()
             if height is None:
                 height = len(data)
             if width is None:
@@ -168,7 +168,7 @@ class World:
         if not hasattr(self.Cell, 'load'):
             return
         if isinstance(f, type('')):
-            f = file(f)
+            f = open(f)
         lines = f.readlines()
         lines = [x.rstrip() for x in lines]
         fh = len(lines)
@@ -188,7 +188,7 @@ class World:
         for j in range(fh):
             line = lines[j]
             for i in range(min(fw, len(line))):
-                self.grid[starty + j][startx + i].load(line[i])
+                self.grid[int(starty + j)][int(startx + i)].load(line[i])
 
     def update(self, fed=None, eaten=None):
         if hasattr(self.Cell, 'update'):
@@ -518,7 +518,7 @@ class PygameDisplay:
                     try:
                         self.screen.fill(c, (sx, sy, self.size, self.size))
                     except TypeError:
-                        print 'Error: invalid colour:', c
+                        print('Error: invalid colour:', c)
                 sx += self.size
             odd = not odd
             sy += self.size
